@@ -3,6 +3,9 @@
 > **"Real-Time Flood, Landslide & Agriculture Risk Monitoring and Early Warning Decision Support System for Nepal"**  
 > *Tagline: Monitor. Assess. Warn.*
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/RajbanshiJiban17/mausamguard-nepa)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/RajbanshiJiban17/mausamguard-nepa&root-directory=frontend)
+
 ---
 
 ## 1. Executive Summary & Purpose
