@@ -224,3 +224,5 @@ npm run build
 
 ## 10. Disclaimer
 > This platform provides risk monitoring and decision-support information using available historical, observational, and forecast data. It is **not** a replacement for official emergency warnings or government instructions. Risk estimates contain uncertainty and may be affected by data availability, resolution, and model limitations. For official warnings and evacuation directives, always follow the relevant authorities: **Department of Hydrology and Meteorology (DHM)** and **National Disaster Risk Reduction and Management Authority (NDRRMA)**.
+#   m a u s a m g u a r d - n e p a  
+ 
