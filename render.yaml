@@ -18,13 +18,11 @@ services:
     healthCheckPath: /api/v1/health
 
   # 2. React + Vite Early Warning Dashboard (Free Static Hosting)
-  - type: web
+  - type: static
     name: mausamguard-frontend
-    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
-    plan: free
     routes:
       - type: rewrite
         source: /*
