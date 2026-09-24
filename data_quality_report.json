@@ -1,0 +1,29 @@
+{
+  "dataset_name": "MausamGuard Nepal Multi-Hazard Historical Disaster Dataset",
+  "validation_timestamp": "2026-09-24T19:14:10.076449+00:00",
+  "total_records": 13185,
+  "valid_records": 13185,
+  "invalid_records": 0,
+  "missing_coordinates": 0,
+  "invalid_dates": 0,
+  "impossible_negatives": 0,
+  "districts_covered": 77,
+  "expected_districts": 77,
+  "hazards_distribution": {
+    "landslide": 7490,
+    "flood": 5537,
+    "avalanche": 157,
+    "flash_flood": 1
+  },
+  "source_coverage": {
+    "bipad": 6851,
+    "bipad+desinventar": 30,
+    "desinventar": 6303,
+    "manual": 1
+  },
+  "date_range": {
+    "min": "1971-04-21",
+    "max": "2026-09-24"
+  },
+  "overall_status": "PASS"
+}

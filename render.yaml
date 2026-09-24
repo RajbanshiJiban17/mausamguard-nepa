@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mausamguard-backend
+    env: docker
+    dockerfilePath: Dockerfile.backend
+    plan: free
+    region: singapore
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DATABASE_URL
+        value: sqlite:///./mausamguard.db
+    healthCheckPath: /api/v1/health

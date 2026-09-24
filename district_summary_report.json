@@ -1,0 +1,1393 @@
+{
+  "generated_at": "2026-09-24T19:24:11.422474+00:00",
+  "total_districts": 77,
+  "districts": [
+    {
+      "district_id": 71,
+      "district_name": "Achham",
+      "province": "Sudur Paschim",
+      "population": 234175,
+      "total_historical_events": 99,
+      "total_deaths": 125,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 51,
+      "district_name": "Arghakhanchi",
+      "province": "Lumbini",
+      "population": 181445,
+      "total_historical_events": 100,
+      "total_deaths": 102,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.8,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 43,
+      "district_name": "Baglung",
+      "province": "Gandaki",
+      "population": 256741,
+      "total_historical_events": 258,
+      "total_deaths": 249,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.5,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 76,
+      "district_name": "Baitadi",
+      "province": "Sudur Paschim",
+      "population": 251031,
+      "total_historical_events": 130,
+      "total_deaths": 70,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 21.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 69,
+      "district_name": "Bajhang",
+      "province": "Sudur Paschim",
+      "population": 196132,
+      "total_historical_events": 150,
+      "total_deaths": 123,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.1,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 70,
+      "district_name": "Bajura",
+      "province": "Sudur Paschim",
+      "population": 145006,
+      "total_historical_events": 194,
+      "total_deaths": 123,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.1,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 57,
+      "district_name": "Banke",
+      "province": "Lumbini",
+      "population": 649419,
+      "total_historical_events": 109,
+      "total_deaths": 43,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 13.8,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 21,
+      "district_name": "Bara",
+      "province": "Madhesh",
+      "population": 808672,
+      "total_historical_events": 83,
+      "total_deaths": 31,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 13.8,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 58,
+      "district_name": "Bardiya",
+      "province": "Lumbini",
+      "population": 485134,
+      "total_historical_events": 107,
+      "total_deaths": 66,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (102 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 29,
+      "district_name": "Bhaktapur",
+      "province": "Bagmati",
+      "population": 475912,
+      "total_historical_events": 75,
+      "total_deaths": 15,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 10,
+      "district_name": "Bhojpur",
+      "province": "Koshi",
+      "population": 160924,
+      "total_historical_events": 146,
+      "total_deaths": 92,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 27.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 35,
+      "district_name": "Chitawan",
+      "province": "Bagmati",
+      "population": 776344,
+      "total_historical_events": 230,
+      "total_deaths": 259,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.8,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (131 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 75,
+      "district_name": "Dadeldhura",
+      "province": "Sudur Paschim",
+      "population": 145125,
+      "total_historical_events": 107,
+      "total_deaths": 53,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 63,
+      "district_name": "Dailekh",
+      "province": "Karnali",
+      "population": 261504,
+      "total_historical_events": 182,
+      "total_deaths": 85,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 20.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 56,
+      "district_name": "Dang",
+      "province": "Lumbini",
+      "population": 726137,
+      "total_historical_events": 184,
+      "total_deaths": 109,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (134 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 77,
+      "district_name": "Darchula",
+      "province": "Sudur Paschim",
+      "population": 138974,
+      "total_historical_events": 206,
+      "total_deaths": 114,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.2,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 33,
+      "district_name": "Dhading",
+      "province": "Bagmati",
+      "population": 337869,
+      "total_historical_events": 300,
+      "total_deaths": 306,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 31.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 7,
+      "district_name": "Dhankuta",
+      "province": "Koshi",
+      "population": 154987,
+      "total_historical_events": 131,
+      "total_deaths": 57,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 36.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Moderate 24-hour rainfall observed (36.5 mm)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 17,
+      "district_name": "Dhanusa",
+      "province": "Madhesh",
+      "population": 924655,
+      "total_historical_events": 116,
+      "total_deaths": 52,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (113 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 25,
+      "district_name": "Dolakha",
+      "province": "Bagmati",
+      "population": 177938,
+      "total_historical_events": 201,
+      "total_deaths": 201,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 64,
+      "district_name": "Dolpa",
+      "province": "Karnali",
+      "population": 45675,
+      "total_historical_events": 107,
+      "total_deaths": 70,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 15.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 72,
+      "district_name": "Doti",
+      "province": "Sudur Paschim",
+      "population": 212415,
+      "total_historical_events": 114,
+      "total_deaths": 159,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 21.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 36,
+      "district_name": "Gorkha",
+      "province": "Gandaki",
+      "population": 258538,
+      "total_historical_events": 201,
+      "total_deaths": 164,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 52,
+      "district_name": "Gulmi",
+      "province": "Lumbini",
+      "population": 251824,
+      "total_historical_events": 178,
+      "total_deaths": 198,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 68,
+      "district_name": "Humla",
+      "province": "Karnali",
+      "population": 58528,
+      "total_historical_events": 107,
+      "total_deaths": 44,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 15.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 3,
+      "district_name": "Ilam",
+      "province": "Koshi",
+      "population": 289675,
+      "total_historical_events": 218,
+      "total_deaths": 158,
+      "overall_risk_level": "HIGH",
+      "overall_risk_score": 40.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "HIGH",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Landslide: Moderately steep terrain (26.0\u00b0)",
+        "Landslide: Elevated antecedent rainfall (31.4 mm / 24h)",
+        "Landslide: High historical landslide density (151 recorded events)"
+      ]
+    },
+    {
+      "district_id": 62,
+      "district_name": "Jajarkot",
+      "province": "Karnali",
+      "population": 200538,
+      "total_historical_events": 181,
+      "total_deaths": 134,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 20.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 4,
+      "district_name": "Jhapa",
+      "province": "Koshi",
+      "population": 1074577,
+      "total_historical_events": 274,
+      "total_deaths": 122,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 23.5,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (262 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 65,
+      "district_name": "Jumla",
+      "province": "Karnali",
+      "population": 124995,
+      "total_historical_events": 68,
+      "total_deaths": 77,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 15.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 73,
+      "district_name": "Kailali",
+      "province": "Sudur Paschim",
+      "population": 966165,
+      "total_historical_events": 217,
+      "total_deaths": 100,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (190 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 66,
+      "district_name": "Kalikot",
+      "province": "Karnali",
+      "population": 152877,
+      "total_historical_events": 181,
+      "total_deaths": 140,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 19.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 74,
+      "district_name": "Kanchanpur",
+      "province": "Sudur Paschim",
+      "population": 546613,
+      "total_historical_events": 165,
+      "total_deaths": 63,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (152 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 50,
+      "district_name": "Kapilbastu",
+      "province": "Lumbini",
+      "population": 732098,
+      "total_historical_events": 60,
+      "total_deaths": 28,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 13.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 39,
+      "district_name": "Kaski",
+      "province": "Gandaki",
+      "population": 645341,
+      "total_historical_events": 365,
+      "total_deaths": 393,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 31.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (117 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 30,
+      "district_name": "Kathmandu",
+      "province": "Bagmati",
+      "population": 2181575,
+      "total_historical_events": 208,
+      "total_deaths": 116,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 27,
+      "district_name": "Kavrepalanchok",
+      "province": "Bagmati",
+      "population": 376628,
+      "total_historical_events": 224,
+      "total_deaths": 175,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 12,
+      "district_name": "Khotang",
+      "province": "Koshi",
+      "population": 178112,
+      "total_historical_events": 151,
+      "total_deaths": 185,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 27.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 28,
+      "district_name": "Lalitpur",
+      "province": "Bagmati",
+      "population": 590131,
+      "total_historical_events": 140,
+      "total_deaths": 81,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 21.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 37,
+      "district_name": "Lamjung",
+      "province": "Gandaki",
+      "population": 160606,
+      "total_historical_events": 212,
+      "total_deaths": 95,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 31.2,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 18,
+      "district_name": "Mahottari",
+      "province": "Madhesh",
+      "population": 750959,
+      "total_historical_events": 126,
+      "total_deaths": 53,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (123 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 34,
+      "district_name": "Makwanpur",
+      "province": "Bagmati",
+      "population": 493790,
+      "total_historical_events": 328,
+      "total_deaths": 549,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 27.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (142 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 38,
+      "district_name": "Manang",
+      "province": "Gandaki",
+      "population": 5768,
+      "total_historical_events": 68,
+      "total_deaths": 85,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.5,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 5,
+      "district_name": "Morang",
+      "province": "Koshi",
+      "population": 1229979,
+      "total_historical_events": 192,
+      "total_deaths": 131,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 23.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (176 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 67,
+      "district_name": "Mugu",
+      "province": "Karnali",
+      "population": 68951,
+      "total_historical_events": 76,
+      "total_deaths": 33,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 15.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 45,
+      "district_name": "Mustang",
+      "province": "Gandaki",
+      "population": 15235,
+      "total_historical_events": 109,
+      "total_deaths": 42,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 44,
+      "district_name": "Myagdi",
+      "province": "Gandaki",
+      "population": 110531,
+      "total_historical_events": 239,
+      "total_deaths": 218,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 46,
+      "district_name": "Nawalparasi East",
+      "province": "Gandaki",
+      "population": 405350,
+      "total_historical_events": 172,
+      "total_deaths": 68,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (114 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 48,
+      "district_name": "Nawalparasi West",
+      "province": "Lumbini",
+      "population": 414060,
+      "total_historical_events": 59,
+      "total_deaths": 9,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 14.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 31,
+      "district_name": "Nuwakot",
+      "province": "Bagmati",
+      "population": 272328,
+      "total_historical_events": 251,
+      "total_deaths": 169,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 31.2,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 13,
+      "district_name": "Okhaldhunga",
+      "province": "Koshi",
+      "population": 144138,
+      "total_historical_events": 165,
+      "total_deaths": 119,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 47,
+      "district_name": "Palpa",
+      "province": "Lumbini",
+      "population": 252870,
+      "total_historical_events": 225,
+      "total_deaths": 162,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 27.1,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "High historical landslide density (183 recorded events)"
+      ]
+    },
+    {
+      "district_id": 2,
+      "district_name": "Panchthar",
+      "province": "Koshi",
+      "population": 176725,
+      "total_historical_events": 217,
+      "total_deaths": 82,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 31.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 42,
+      "district_name": "Parbat",
+      "province": "Gandaki",
+      "population": 134028,
+      "total_historical_events": 154,
+      "total_deaths": 56,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 21.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 22,
+      "district_name": "Parsa",
+      "province": "Madhesh",
+      "population": 691463,
+      "total_historical_events": 84,
+      "total_deaths": 47,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 13.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 55,
+      "district_name": "Pyuthan",
+      "province": "Lumbini",
+      "population": 242520,
+      "total_historical_events": 146,
+      "total_deaths": 156,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 24,
+      "district_name": "Ramechhap",
+      "province": "Bagmati",
+      "population": 172739,
+      "total_historical_events": 142,
+      "total_deaths": 121,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 21.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 32,
+      "district_name": "Rasuwa",
+      "province": "Bagmati",
+      "population": 49253,
+      "total_historical_events": 168,
+      "total_deaths": 1377,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 21.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 20,
+      "district_name": "Rautahat",
+      "province": "Madhesh",
+      "population": 871027,
+      "total_historical_events": 168,
+      "total_deaths": 165,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (165 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 54,
+      "district_name": "Rolpa",
+      "province": "Lumbini",
+      "population": 246489,
+      "total_historical_events": 219,
+      "total_deaths": 143,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "High historical landslide density (193 recorded events)"
+      ]
+    },
+    {
+      "district_id": 53,
+      "district_name": "Rukum East",
+      "province": "Lumbini",
+      "population": 58948,
+      "total_historical_events": 99,
+      "total_deaths": 59,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 17.7,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 59,
+      "district_name": "Rukum West",
+      "province": "Karnali",
+      "population": 176692,
+      "total_historical_events": 204,
+      "total_deaths": 82,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 20.1,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 49,
+      "district_name": "Rupandehi",
+      "province": "Lumbini",
+      "population": 1215020,
+      "total_historical_events": 139,
+      "total_deaths": 114,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (116 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 60,
+      "district_name": "Salyan",
+      "province": "Karnali",
+      "population": 248002,
+      "total_historical_events": 117,
+      "total_deaths": 60,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 19.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 9,
+      "district_name": "Sankhuwasabha",
+      "province": "Koshi",
+      "population": 164634,
+      "total_historical_events": 289,
+      "total_deaths": 138,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 15,
+      "district_name": "Saptari",
+      "province": "Madhesh",
+      "population": 747875,
+      "total_historical_events": 151,
+      "total_deaths": 31,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.4,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (149 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 19,
+      "district_name": "Sarlahi",
+      "province": "Madhesh",
+      "population": 915320,
+      "total_historical_events": 172,
+      "total_deaths": 683,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 18.3,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "High historical flood frequency (166 recorded flood events)",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 23,
+      "district_name": "Sindhuli",
+      "province": "Bagmati",
+      "population": 313397,
+      "total_historical_events": 233,
+      "total_deaths": 336,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.6,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (147 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 26,
+      "district_name": "Sindhupalchok",
+      "province": "Bagmati",
+      "population": 269852,
+      "total_historical_events": 315,
+      "total_deaths": 437,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.5,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 16,
+      "district_name": "Siraha",
+      "province": "Madhesh",
+      "population": 789696,
+      "total_historical_events": 103,
+      "total_deaths": 36,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 13.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Slope and precipitation indices remain within stable limits"
+      ]
+    },
+    {
+      "district_id": 11,
+      "district_name": "Solukhumbu",
+      "province": "Koshi",
+      "population": 109135,
+      "total_historical_events": 215,
+      "total_deaths": 170,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.2,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 6,
+      "district_name": "Sunsari",
+      "province": "Koshi",
+      "population": 996243,
+      "total_historical_events": 199,
+      "total_deaths": 48,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 23.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (155 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 61,
+      "district_name": "Surkhet",
+      "province": "Karnali",
+      "population": 444365,
+      "total_historical_events": 108,
+      "total_deaths": 57,
+      "overall_risk_level": "LOW",
+      "overall_risk_score": 15.8,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "LOW",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 0,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Steep slope terrain (32.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 41,
+      "district_name": "Syangja",
+      "province": "Gandaki",
+      "population": 258277,
+      "total_historical_events": 231,
+      "total_deaths": 232,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.5,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 40,
+      "district_name": "Tanahu",
+      "province": "Gandaki",
+      "population": 334431,
+      "total_historical_events": 191,
+      "total_deaths": 204,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.1,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 1,
+      "district_name": "Taplejung",
+      "province": "Koshi",
+      "population": 124619,
+      "total_historical_events": 307,
+      "total_deaths": 222,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 26.5,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 8,
+      "district_name": "Terhathum",
+      "province": "Koshi",
+      "population": 90553,
+      "total_historical_events": 80,
+      "total_deaths": 24,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 22.9,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "Current rainfall and river metrics remain well below warning thresholds",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    },
+    {
+      "district_id": 14,
+      "district_name": "Udayapur",
+      "province": "Koshi",
+      "population": 359146,
+      "total_historical_events": 245,
+      "total_deaths": 119,
+      "overall_risk_level": "MODERATE",
+      "overall_risk_score": 28.0,
+      "flood_risk_level": "LOW",
+      "landslide_risk_level": "MODERATE",
+      "agriculture_risk_level": "LOW",
+      "active_alerts_count": 1,
+      "top_risk_factors": [
+        "High historical flood frequency (155 recorded flood events)",
+        "Moderately steep terrain (26.0\u00b0)"
+      ]
+    }
+  ]
+}

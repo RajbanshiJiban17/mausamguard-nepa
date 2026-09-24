@@ -1,0 +1,78 @@
+{
+ "generated": "2026-09-24",
+ "reference_date": "2026-09-24",
+ "note": "Areas recently hit hard enough to stay at raised risk while they recover: saturated ground, blocked or re-routed channels, debris still perched upslope, damaged infrastructure. Derived from the recorded event feed and self-expiring — the frontend re-checks every alert against the viewer's own clock, so a stale build simply shows nothing rather than something wrong.",
+ "min_severity": 25.0,
+ "stages": [
+  {
+   "through_days": 7,
+   "level": "high",
+   "label": "Area in high alert"
+  },
+  {
+   "through_days": 21,
+   "level": "elevated",
+   "label": "Area under an elevated alert"
+  },
+  {
+   "through_days": 45,
+   "level": "watch",
+   "label": "Recently affected area"
+  }
+ ],
+ "effects": {
+  "high": {
+   "floor": 78,
+   "boost": 0.55
+  },
+  "elevated": {
+   "floor": 55,
+   "boost": 0.3
+  },
+  "watch": {
+   "floor": 35,
+   "boost": 0.15
+  }
+ },
+ "counts": {
+  "high": 0,
+  "elevated": 0,
+  "watch": 2
+ },
+ "alerts": [
+  {
+   "district": "Rasuwa",
+   "palikas": [
+    "Gosaikunda"
+   ],
+   "level": "watch",
+   "label": "Recently affected area",
+   "hazard": "flash_flood",
+   "event_id": "manual-2026-08-26-langtang",
+   "event_date": "2026-08-26",
+   "deaths": 1252,
+   "missing": 4216,
+   "days_since": 29,
+   "expires": "2026-10-10",
+   "stage_ends": "2026-10-10",
+   "source": "derived from the recorded event feed"
+  },
+  {
+   "district": "Rolpa",
+   "palikas": [
+    "Rolpa"
+   ],
+   "level": "watch",
+   "label": "Recently affected area",
+   "hazard": "landslide",
+   "event_id": "bipad-93020",
+   "event_date": "2026-08-12",
+   "deaths": 5,
+   "missing": 1,
+   "days_since": 43,
+   "expires": "2026-09-26",
+   "stage_ends": "2026-09-26",
+   "source": "derived from the recorded event feed"
+  }
+ ]
+}
