@@ -21,9 +21,9 @@ def get_active_alerts(
     district: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
-    active_count = db.query(Alert).filter(Alert.status == "ACTIVE").count()
-    if active_count < 10:
-        from app.models.risk import LatestDistrictRisk
+    flood_alerts_count = db.query(Alert).filter(Alert.status == "ACTIVE", Alert.hazard == "flood").count()
+    if flood_alerts_count < 9:
+        from app.models.risk import RiskAssessment
         from app.models.district import District
         from app.services.alert_service import evaluate_and_create_alerts
 
@@ -132,9 +132,93 @@ def get_active_alerts(
             }
             evaluate_and_create_alerts(db, achham, achham_risk)
 
+        # Ensure Jhapa has active flood warning (Kankai & Mechi)
+        jhapa = db.query(District).filter(District.district_name.ilike("jhapa")).first()
+        if jhapa:
+            jhapa_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 84.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 86.0,
+                "landslide_risk_level": "LOW",
+                "landslide_risk_score": 10.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 80.0,
+                "risk_factors": [
+                    "कन्काई र मेची नदी बहाव वृद्धि (Kankai & Mechi Rivers Surge)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): दमक (Damak), भद्रपुर (Bhadrapur), गौरादह (Gauradaha), झापा गाउँपालिका",
+                    "जोखिमयुक्त नदीहरू: कन्काई नदी, मेची नदी, विरिङ नदी",
+                    "सुरक्षा निर्देशन: तटीय क्षेत्र तथा होचा खेतबारीमा पानी पस्न सक्ने भएकाले सतर्क रहनुहोस्।"
+                ]
+            }
+            evaluate_and_create_alerts(db, jhapa, jhapa_risk)
+
+        # Ensure Morang has active flood warning (Bakraha & Ratuwa)
+        morang = db.query(District).filter(District.district_name.ilike("morang")).first()
+        if morang:
+            morang_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 83.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 85.0,
+                "landslide_risk_level": "LOW",
+                "landslide_risk_score": 10.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 82.0,
+                "risk_factors": [
+                    "बक्राहा र रतुवा नदीमा बाढीको चेतावनी (Bakraha & Ratuwa Flash Flood)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): विराटनगर (Biratnagar), रतुवामाई (Ratuwamai), जहदा (Jahada)",
+                    "जोखिमयुक्त नदीहरू: बक्राहा नदी, रतुवा नदी, केशलिया नदी",
+                    "सुरक्षा निर्देशन: दक्षिणी भेगका होचा भूभागमा डुबान सतर्कता।"
+                ]
+            }
+            evaluate_and_create_alerts(db, morang, morang_risk)
+
+        # Ensure Sunsari has active flood warning (Koshi River)
+        sunsari = db.query(District).filter(District.district_name.ilike("sunsari")).first()
+        if sunsari:
+            sunsari_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 85.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 88.0,
+                "landslide_risk_level": "LOW",
+                "landslide_risk_score": 10.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 85.0,
+                "risk_factors": [
+                    "सप्तकोशी नदी बहाव उच्च (Saptakoshi River High Flow)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): बराहक्षेत्र (Barahakshetra), इनरुवा (Inaruwa), दुहबी (Duhabi)",
+                    "जोखिमयुक्त नदीहरू: सप्तकोशी नदी (Saptakoshi River)",
+                    "सुरक्षा निर्देशन: कोशी तटबन्ध छेउछाउ र टापु बस्तीका बासिन्दा उच्च सतर्कतामा रहनुहोस्।"
+                ]
+            }
+            evaluate_and_create_alerts(db, sunsari, sunsari_risk)
+
+        # Ensure Rautahat has active flood warning (Bagmati & Lalbakaiya)
+        rautahat = db.query(District).filter(District.district_name.ilike("rautahat")).first()
+        if rautahat:
+            rautahat_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 86.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 88.0,
+                "landslide_risk_level": "LOW",
+                "landslide_risk_score": 10.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 88.0,
+                "risk_factors": [
+                    "बागमती र लालबकैया नदी डुबान खतरा (Bagmati & Lalbakaiya Flood)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): गौर (Gaur), ईशनाथ (Ishnath), राजदेवी (Rajdevi)",
+                    "जोखिमयुक्त नदीहरू: बागमती नदी, लालबकैया नदी",
+                    "सुरक्षा निर्देशन: गौर बजार तथा सीमावर्ती होचो क्षेत्रमा बाढीको पानी पस्ने जोखिम।"
+                ]
+            }
+            evaluate_and_create_alerts(db, rautahat, rautahat_risk)
+
         # Populate from latest risks
-        risks = db.query(LatestDistrictRisk).filter(
-            LatestDistrictRisk.overall_risk_level.in_(["MODERATE", "HIGH", "VERY HIGH", "CRITICAL"])
+        risks = db.query(RiskAssessment).filter(
+            RiskAssessment.overall_risk_level.in_(["MODERATE", "HIGH", "VERY HIGH", "CRITICAL"])
         ).limit(20).all()
 
         for r in risks:
@@ -154,12 +238,13 @@ def get_active_alerts(
                 evaluate_and_create_alerts(db, d, risk_out)
 
     query = db.query(Alert).filter(Alert.status == "ACTIVE")
-    if hazard:
-        query = query.filter(Alert.hazard == hazard)
-    if priority:
-        query = query.filter(Alert.priority == priority)
+    if hazard and hazard != "all":
+        h_clean = "flood" if "flood" in hazard.lower() else ("landslide" if "landslide" in hazard.lower() else ("agriculture" if "agri" in hazard.lower() else hazard.lower()))
+        query = query.filter(Alert.hazard.ilike(f"%{h_clean}%"))
+    if priority and priority != "all":
+        query = query.filter(Alert.priority.ilike(f"%{priority.strip()}%"))
     if district:
-        query = query.filter(Alert.district.ilike(f"%{district}%"))
+        query = query.filter(Alert.district.ilike(f"%{district.strip()}%"))
 
     alerts = query.order_by(desc(Alert.score), desc(Alert.created_at)).all()
 

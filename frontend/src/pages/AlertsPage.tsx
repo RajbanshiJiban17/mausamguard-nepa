@@ -24,6 +24,7 @@ import {
 import { api } from '../api/client';
 import RiskBadge from '../components/RiskBadge';
 import DisclaimerBanner from '../components/DisclaimerBanner';
+import { Pagination } from '../components/Pagination';
 import { Alert, AlertPriority } from '../types';
 
 const getImpactedPalikasAndRivers = (district: string, hazard: string) => {
@@ -73,6 +74,7 @@ const getImpactedPalikasAndRivers = (district: string, hazard: string) => {
 export default function AlertsPage() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [errorState, setErrorState] = useState<string | null>(null);
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const [hazardFilter, setHazardFilter] = useState<string>('all');
   const [searchDistrict, setSearchDistrict] = useState<string>('');
@@ -90,18 +92,27 @@ export default function AlertsPage() {
   const loadAlerts = async () => {
     try {
       setLoading(true);
+      setErrorState(null);
       const data: any = await api.getActiveAlerts({
         priority: priorityFilter !== 'all' ? priorityFilter : undefined,
         hazard: hazardFilter !== 'all' ? hazardFilter : undefined,
       });
       const list = Array.isArray(data) ? data : (data?.alerts || []);
       setAlerts(list);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to load active alerts:', err);
+      setErrorState(err.message || 'चेतावनी लोड गर्न असफल भयो (Failed to connect to alerting service).');
       setAlerts([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const resetAllFilters = () => {
+    setHazardFilter('all');
+    setPriorityFilter('all');
+    setSearchDistrict('');
+    setCurrentPage(1);
   };
 
   const handleResolve = async (alertId: string) => {
@@ -120,10 +131,11 @@ export default function AlertsPage() {
 
   const filteredAlerts = (Array.isArray(alerts) ? alerts : []).filter((a) => {
     if (!a) return false;
-    const query = searchDistrict.toLowerCase();
+    const query = searchDistrict.toLowerCase().trim();
     const dist = (a.district || '').toLowerCase();
     const title = (a.title || '').toLowerCase();
-    return dist.includes(query) || title.includes(query);
+    const msg = (a.message || '').toLowerCase();
+    return !query || dist.includes(query) || title.includes(query) || msg.includes(query);
   });
 
   return (
@@ -306,13 +318,45 @@ export default function AlertsPage() {
             <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-500" />
             <p className="text-sm">Evaluating active early warning thresholds...</p>
           </div>
+        ) : errorState ? (
+          <div className="bg-red-950/30 border border-red-800/60 rounded-2xl p-8 text-center text-red-300 space-y-4">
+            <AlertCircle className="w-12 h-12 text-red-400 mx-auto" />
+            <div>
+              <h3 className="text-base font-bold text-white mb-1">चेतावनी सेवामा समस्या देखा पर्यो</h3>
+              <p className="text-xs text-red-300/80 max-w-md mx-auto">{errorState}</p>
+            </div>
+            <button
+              onClick={() => loadAlerts()}
+              className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-2 cursor-pointer transition-all shadow-md shadow-red-950/60"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>पुनः प्रयास गर्नुहोस् (Retry Connection)</span>
+            </button>
+          </div>
         ) : filteredAlerts.length === 0 ? (
-          <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
-            <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-1">No Active Elevated Early Warnings</h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto">
-              Current live precipitation observations and forecast horizons across all 77 districts are currently below triggering warning thresholds.
-            </p>
+          <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-10 text-center text-slate-400 space-y-4">
+            <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
+            <div>
+              <h3 className="text-lg font-bold text-white mb-1">
+                {hazardFilter !== 'all' || priorityFilter !== 'all' || searchDistrict.trim()
+                  ? 'चयन गरिएको फिल्टरमा कुनै सक्रिय चेतावनी छैन'
+                  : 'हाल कुनै उच्च आपतकालीन चेतावनी सक्रिय छैन'}
+              </h3>
+              <p className="text-xs text-slate-500 max-w-md mx-auto">
+                {hazardFilter !== 'all' || priorityFilter !== 'all' || searchDistrict.trim()
+                  ? `खोजिएको मापदण्ड (${hazardFilter !== 'all' ? `Hazard: ${hazardFilter}` : ''} ${priorityFilter !== 'all' ? `Priority: ${priorityFilter}` : ''} ${searchDistrict ? `Search: "${searchDistrict}"` : ''}) अनुसार कुनै अलर्ट प्राप्त भएन। फिल्टर हटाएर सबै चेतावनीहरू हेर्न सक्नुहुन्छ।`
+                  : 'सबै ७७ जिल्लाहरूमा हालको वर्षा तथा बाढी मापदण्ड सामान्य सीमा भित्र रहेको छ।'}
+              </p>
+            </div>
+            {(hazardFilter !== 'all' || priorityFilter !== 'all' || searchDistrict.trim()) && (
+              <button
+                onClick={resetAllFilters}
+                className="px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-medium cursor-pointer transition-all inline-flex items-center gap-1.5 mx-auto"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>सबै फिल्टर रिसेट गर्नुहोस् (Reset All Filters)</span>
+              </button>
+            )}
           </div>
         ) : (
           (() => {
@@ -464,54 +508,16 @@ export default function AlertsPage() {
                 </div>
 
                 {/* Pagination Controls */}
-                {totalPages > 1 && (
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800 mt-4 text-xs">
-                    <div className="text-slate-400 font-mono">
-                      Page {currentPage} of {totalPages}
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                        disabled={currentPage === 1}
-                        className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-all cursor-pointer"
-                      >
-                        <ChevronLeft className="w-4 h-4" />
-                        <span>Prev</span>
-                      </button>
-
-                      {Array.from({ length: totalPages }, (_, i) => i + 1)
-                        .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
-                        .map((p, idx, arr) => {
-                          const prev = arr[idx - 1];
-                          const hasGap = prev && p - prev > 1;
-                          return (
-                            <React.Fragment key={p}>
-                              {hasGap && <span className="px-1 text-slate-600">...</span>}
-                              <button
-                                onClick={() => setCurrentPage(p)}
-                                className={`w-8 h-8 rounded-lg font-mono text-xs transition-all cursor-pointer ${
-                                  currentPage === p
-                                    ? 'bg-blue-600 text-white font-bold shadow-md shadow-blue-900/50'
-                                    : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
-                                }`}
-                              >
-                                {p}
-                              </button>
-                            </React.Fragment>
-                          );
-                        })}
-
-                      <button
-                        onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                        disabled={currentPage === totalPages}
-                        className="px-2.5 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-all cursor-pointer"
-                      >
-                        <span>Next</span>
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                )}
+                <div className="rounded-2xl overflow-hidden border border-slate-800 mt-4">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalRecords={filteredAlerts.length}
+                    pageSize={pageSize}
+                    onPageChange={(p) => setCurrentPage(p)}
+                    itemName="alerts"
+                  />
+                </div>
               </div>
             );
           })()
