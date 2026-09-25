@@ -44,7 +44,10 @@ def list_districts(
 ):
     query = db.query(District)
     if province:
-        query = query.filter(District.province.ilike(f"%{province}%"))
+        if "sudur" in province.lower():
+            query = query.filter(or_(District.province.ilike("%Sudur%"), District.province.ilike("%Paschim%")))
+        else:
+            query = query.filter(District.province.ilike(f"%{province}%"))
     if search:
         query = query.filter(District.district_name.ilike(f"%{search}%"))
 

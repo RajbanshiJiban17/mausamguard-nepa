@@ -103,7 +103,67 @@ DHM_BENCHMARK_STATIONS = [
         "longitude": 80.252,
         "warning_level_m": 6.5,
         "danger_level_m": 7.5,
-        "notes": "Far-western boundary river station"
+        "notes": "Far-western boundary river station (Dadeldhura)"
+    },
+    {
+        "station_id": "DHM-RIV-09",
+        "station_name": "Darchula (Mahakali)",
+        "river_name": "Mahakali",
+        "basin": "Mahakali",
+        "district": "Darchula",
+        "latitude": 29.840,
+        "longitude": 80.536,
+        "warning_level_m": 4.5,
+        "danger_level_m": 5.5,
+        "notes": "Upstream Himalayan station monitoring Glacial and Flash Flood surges on Mahakali"
+    },
+    {
+        "station_id": "DHM-RIV-10",
+        "station_name": "Dipayal (Seti River)",
+        "river_name": "Seti",
+        "basin": "Seti / Karnali",
+        "district": "Doti",
+        "latitude": 29.261,
+        "longitude": 80.938,
+        "warning_level_m": 8.4,
+        "danger_level_m": 10.5,
+        "notes": "Major tributary gauge monitoring central Sudurpashchim basin"
+    },
+    {
+        "station_id": "DHM-RIV-11",
+        "station_name": "Sanfebagar (Budhiganga)",
+        "river_name": "Budhiganga",
+        "basin": "Budhiganga / Karnali",
+        "district": "Achham",
+        "latitude": 29.245,
+        "longitude": 81.218,
+        "warning_level_m": 5.5,
+        "danger_level_m": 6.8,
+        "notes": "Key mountain river station for Achham and Bajura runoff"
+    },
+    {
+        "station_id": "DHM-RIV-12",
+        "station_name": "Dhangadhi / Phulbari (Mohana River)",
+        "river_name": "Mohana",
+        "basin": "Mohana",
+        "district": "Kailali",
+        "latitude": 28.665,
+        "longitude": 80.605,
+        "warning_level_m": 3.5,
+        "danger_level_m": 4.5,
+        "notes": "Critical Terai floodplain inundation station for Kailali communities"
+    },
+    {
+        "station_id": "DHM-RIV-13",
+        "station_name": "Dodhara-Chandani (Mahakali)",
+        "river_name": "Mahakali",
+        "basin": "Mahakali",
+        "district": "Kanchanpur",
+        "latitude": 28.966,
+        "longitude": 80.125,
+        "warning_level_m": 6.8,
+        "danger_level_m": 8.0,
+        "notes": "Downstream Terai barrage gauge for Kanchanpur early warnings"
     }
 ]
 

@@ -210,7 +210,10 @@ def load_districts_and_palikas(db: Session):
         props = feat.get("properties", {})
         dname = props.get("adm2_name")
         if dname:
-            prov_map[dname] = props.get("adm1_name", "Unknown")
+            prov_name = props.get("adm1_name", "Unknown")
+            if "sudur" in prov_name.lower():
+                prov_name = "Sudurpashchim"
+            prov_map[dname] = prov_name
             pcode_map[dname] = props.get("adm2_pcode", "")
             area_map[dname] = props.get("area_sqkm", 0.0)
 

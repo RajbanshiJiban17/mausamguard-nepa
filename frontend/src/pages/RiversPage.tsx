@@ -41,7 +41,9 @@ export default function RiversPage() {
 
   const filteredStations = stations.filter((st) =>
     st.station_name.toLowerCase().includes(search.toLowerCase()) ||
-    st.district.toLowerCase().includes(search.toLowerCase())
+    st.district.toLowerCase().includes(search.toLowerCase()) ||
+    (st.river_name && st.river_name.toLowerCase().includes(search.toLowerCase())) ||
+    (st.basin && st.basin.toLowerCase().includes(search.toLowerCase()))
   );
 
   return (
@@ -102,7 +104,7 @@ export default function RiversPage() {
             <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search station or district..."
+              placeholder="Search station, river, or district..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-slate-950 border border-slate-800 text-xs text-white pl-9 pr-3 py-2 rounded-xl focus:outline-none focus:border-cyan-500"
@@ -117,14 +119,15 @@ export default function RiversPage() {
               className="bg-slate-950 border border-slate-800 text-xs text-slate-300 py-1.5 px-3 rounded-xl focus:outline-none focus:border-cyan-500"
             >
               <option value="all">All Basins</option>
-              <option value="Koshi">Koshi Basin</option>
-              <option value="Narayani">Narayani / Gandaki</option>
+              <option value="Mahakali">Mahakali Basin (Sudurpashchim)</option>
+              <option value="Seti">Seti Basin (Sudurpashchim)</option>
+              <option value="Budhiganga">Budhiganga Basin (Sudurpashchim)</option>
+              <option value="Mohana">Mohana Basin (Kailali)</option>
               <option value="Karnali">Karnali Basin</option>
-              <option value="Mahakali">Mahakali Basin</option>
               <option value="West Rapti">West Rapti</option>
-              <option value="Babai">Babai Basin</option>
+              <option value="Narayani">Narayani / Gandaki</option>
               <option value="Bagmati">Bagmati Basin</option>
-              <option value="Kankai">Kankai Basin</option>
+              <option value="Koshi">Koshi Basin</option>
             </select>
           </div>
         </div>
