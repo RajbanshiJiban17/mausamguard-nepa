@@ -36,6 +36,8 @@ class WeatherForecastOut(BaseModel):
 
 class RainfallDistrictItem(BaseModel):
     district_name: str
+    province: Optional[str] = None
+    palikas: Optional[List[str]] = None
     rain_1h: float
     rain_3h: float
     rain_6h: float

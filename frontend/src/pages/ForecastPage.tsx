@@ -46,12 +46,32 @@ export default function ForecastPage() {
     }
   };
 
-  const chartHourlyPrecip = forecastData?.hourly_forecast
-    ? forecastData.hourly_forecast.slice(0, 24).map((h: any) => ({
-        label: h.time ? h.time.split('T')[1]?.slice(0, 5) || h.time : '',
-        value: h.precipitation_mm || 0,
-      }))
-    : [];
+  const getHorizonSum = (hours: number): string => {
+    if (!forecastData) return '0.0';
+    if (Array.isArray(forecastData.horizons)) {
+      const item = forecastData.horizons.find((h: any) => h.horizon_hours === hours);
+      if (item && item.precipitation_sum !== undefined) return Number(item.precipitation_sum).toFixed(1);
+    }
+    const key = `${hours}h`;
+    const obj = forecastData.horizons?.[key];
+    const val = obj?.precipitation_mm ?? obj?.precipitation_sum;
+    if (val !== undefined && val !== null) return Number(val).toFixed(1);
+    return '0.0';
+  };
+
+  const hourlyItems = (forecastData?.hourly_series || forecastData?.hourly_forecast || []).map((h: any) => ({
+    time: h.time,
+    temperature: h.temperature ?? h.temperature_2m ?? h.temperature_c ?? null,
+    precipitation: h.precipitation ?? h.precipitation_mm ?? 0.0,
+    humidity: h.relative_humidity ?? h.relative_humidity_2m ?? h.relative_humidity_pct ?? null,
+    wind: h.wind_speed ?? h.wind_speed_10m ?? h.wind_speed_kmh ?? null,
+    soil_moisture: h.soil_moisture ?? h.soil_moisture_m3m3 ?? null,
+  }));
+
+  const chartHourlyPrecip = hourlyItems.slice(0, 24).map((h: any) => ({
+    label: h.time ? h.time.split('T')[1]?.slice(0, 5) || h.time : '',
+    value: h.precipitation || 0,
+  }));
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -109,35 +129,35 @@ export default function ForecastPage() {
               <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-center">
                 <div className="text-[10px] text-slate-400 uppercase font-semibold">6h Horizon</div>
                 <div className="text-xl font-bold font-mono text-white mt-1">
-                  {forecastData.horizons?.['6h']?.precipitation_mm?.toFixed(1) || '0.0'} mm
+                  {getHorizonSum(6)} mm
                 </div>
                 <div className="text-[10px] text-slate-500">Accumulated</div>
               </div>
               <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-center">
                 <div className="text-[10px] text-slate-400 uppercase font-semibold">12h Horizon</div>
                 <div className="text-xl font-bold font-mono text-white mt-1">
-                  {forecastData.horizons?.['12h']?.precipitation_mm?.toFixed(1) || '0.0'} mm
+                  {getHorizonSum(12)} mm
                 </div>
                 <div className="text-[10px] text-slate-500">Accumulated</div>
               </div>
               <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-center">
                 <div className="text-[10px] text-slate-400 uppercase font-semibold">24h Horizon</div>
                 <div className="text-xl font-bold font-mono text-sky-400 mt-1">
-                  {forecastData.horizons?.['24h']?.precipitation_mm?.toFixed(1) || '0.0'} mm
+                  {getHorizonSum(24)} mm
                 </div>
                 <div className="text-[10px] text-slate-500">Accumulated</div>
               </div>
               <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-center">
                 <div className="text-[10px] text-slate-400 uppercase font-semibold">48h Horizon</div>
                 <div className="text-xl font-bold font-mono text-blue-400 mt-1">
-                  {forecastData.horizons?.['48h']?.precipitation_mm?.toFixed(1) || '0.0'} mm
+                  {getHorizonSum(48)} mm
                 </div>
                 <div className="text-[10px] text-slate-500">Accumulated</div>
               </div>
               <div className="bg-slate-900/60 border border-slate-800 p-4 rounded-xl text-center col-span-2 sm:col-span-1">
                 <div className="text-[10px] text-slate-400 uppercase font-semibold">72h Total</div>
                 <div className="text-xl font-bold font-mono text-indigo-400 mt-1">
-                  {forecastData.horizons?.['72h']?.precipitation_mm?.toFixed(1) || '0.0'} mm
+                  {getHorizonSum(72)} mm
                 </div>
                 <div className="text-[10px] text-slate-500">3-Day Total</div>
               </div>
@@ -176,25 +196,25 @@ export default function ForecastPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60 font-sans">
-                    {(forecastData.hourly_forecast || []).slice(0, 24).map((h: any, i: number) => (
+                    {hourlyItems.slice(0, 24).map((h: any, i: number) => (
                       <tr key={i} className="hover:bg-slate-800/40">
                         <td className="py-2.5 px-4 font-mono font-medium text-slate-200">
                           {h.time?.replace('T', ' ')}
                         </td>
                         <td className="py-2.5 px-4 font-mono text-amber-400">
-                          {h.temperature_c !== null ? `${h.temperature_c}°C` : 'N/A'}
+                          {h.temperature !== null ? `${Number(h.temperature).toFixed(1)}°C` : 'N/A'}
                         </td>
                         <td className="py-2.5 px-4 font-mono font-bold text-sky-400">
-                          {h.precipitation_mm !== null ? `${h.precipitation_mm} mm` : '0.0 mm'}
+                          {h.precipitation !== null ? `${Number(h.precipitation).toFixed(1)} mm` : '0.0 mm'}
                         </td>
                         <td className="py-2.5 px-4 font-mono text-blue-300">
-                          {h.relative_humidity_pct !== null ? `${h.relative_humidity_pct}%` : 'N/A'}
+                          {h.humidity !== null ? `${Math.round(h.humidity)}%` : 'N/A'}
                         </td>
                         <td className="py-2.5 px-4 font-mono text-slate-300">
-                          {h.wind_speed_kmh !== null ? `${h.wind_speed_kmh} km/h` : 'N/A'}
+                          {h.wind !== null ? `${Number(h.wind).toFixed(1)} km/h` : 'N/A'}
                         </td>
                         <td className="py-2.5 px-4 font-mono text-emerald-400">
-                          {h.soil_moisture_m3m3 !== null ? `${(h.soil_moisture_m3m3 * 100).toFixed(1)}%` : 'N/A'}
+                          {h.soil_moisture !== null ? `${(Number(h.soil_moisture) * 100).toFixed(1)}%` : 'N/A'}
                         </td>
                       </tr>
                     ))}

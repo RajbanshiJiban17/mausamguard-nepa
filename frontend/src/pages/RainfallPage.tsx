@@ -38,19 +38,29 @@ export default function RainfallPage() {
     }
   };
 
-  const districts = (data?.district_rainfall || [])
-    .filter((d: any) => d.district.toLowerCase().includes(search.toLowerCase()))
+  const rawDistricts: any[] = data?.district_rainfall || data?.districts || [];
+  const districts = rawDistricts
+    .filter((d: any) => {
+      const q = search.toLowerCase().trim();
+      if (!q) return true;
+      const distName = (d.district || d.district_name || '').toLowerCase();
+      const provName = (d.province || '').toLowerCase();
+      const palikaMatch = Array.isArray(d.palikas) && d.palikas.some((p: string) => p.toLowerCase().includes(q));
+      return distName.includes(q) || provName.includes(q) || palikaMatch;
+    })
     .sort((a: any, b: any) => {
-      let vA = a.rain_24h_mm || 0;
-      let vB = b.rain_24h_mm || 0;
+      let vA = a.rain_24h_mm ?? a.rain_24h ?? 0;
+      let vB = b.rain_24h_mm ?? b.rain_24h ?? 0;
       if (sortField === 'rain1h') {
-        vA = a.rain_1h_mm || 0;
-        vB = b.rain_1h_mm || 0;
+        vA = a.rain_1h_mm ?? a.rain_1h ?? 0;
+        vB = b.rain_1h_mm ?? b.rain_1h ?? 0;
       } else if (sortField === 'rain72h') {
-        vA = a.rain_72h_mm || 0;
-        vB = b.rain_72h_mm || 0;
+        vA = a.rain_72h_mm ?? a.rain_72h ?? 0;
+        vB = b.rain_72h_mm ?? b.rain_72h ?? 0;
       } else if (sortField === 'name') {
-        return sortAsc ? a.district.localeCompare(b.district) : b.district.localeCompare(a.district);
+        const nameA = a.district || a.district_name || '';
+        const nameB = b.district || b.district_name || '';
+        return sortAsc ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
       }
       return sortAsc ? vA - vB : vB - vA;
     });
@@ -139,15 +149,23 @@ export default function RainfallPage() {
 
         {/* Toolbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/40 border border-slate-800 p-3 rounded-2xl">
-          <div className="relative w-full sm:w-72">
+          <div className="relative w-full sm:w-96">
             <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search district..."
+              placeholder="Search district, province, or local palika (e.g. Joshipur, Tikapur)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 text-xs text-white pl-9 pr-3 py-2 rounded-xl focus:outline-none focus:border-blue-500"
+              className="w-full bg-slate-950 border border-slate-800 text-xs text-white pl-9 pr-8 py-2 rounded-xl focus:outline-none focus:border-blue-500"
             />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -209,43 +227,60 @@ export default function RainfallPage() {
                 ) : districts.length === 0 ? (
                   <tr>
                     <td colSpan={11} className="py-12 text-center text-slate-500">
-                      No matching district records found.
+                      No matching district or local palika records found.
                     </td>
                   </tr>
                 ) : (
                   districts.map((d: any, idx: number) => {
-                    const r24 = d.rain_24h_mm || 0;
+                    const distName = d.district || d.district_name || 'District';
+                    const r24 = d.rain_24h_mm ?? d.rain_24h ?? 0;
+                    const r1 = d.rain_1h_mm ?? d.rain_1h ?? 0;
+                    const r3 = d.rain_3h_mm ?? d.rain_3h ?? 0;
+                    const r6 = d.rain_6h_mm ?? d.rain_6h ?? 0;
+                    const r12 = d.rain_12h_mm ?? d.rain_12h ?? 0;
+                    const r48 = d.rain_48h_mm ?? d.rain_48h ?? 0;
+                    const r72 = d.rain_72h_mm ?? d.rain_72h ?? 0;
                     const isOverWarning = r24 >= 140;
                     const isModerate = r24 >= 70;
+
+                    const trimmedSearch = search.toLowerCase().trim();
+                    const matchingPalikas = trimmedSearch && Array.isArray(d.palikas)
+                      ? d.palikas.filter((p: string) => p.toLowerCase().includes(trimmedSearch))
+                      : [];
 
                     return (
                       <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
                         <td className="py-3 px-4 font-semibold text-white">
-                          <Link to={`/district/${d.district}`} className="hover:text-blue-400">
-                            {d.district}
+                          <Link to={`/district/${distName}`} className="hover:text-blue-400 text-sky-200">
+                            {distName}
                           </Link>
+                          {matchingPalikas.length > 0 && (
+                            <div className="text-[10px] text-emerald-400 font-normal mt-0.5">
+                              Matched Palika: {matchingPalikas.slice(0, 3).join(', ')}
+                            </div>
+                          )}
                         </td>
-                        <td className="py-3 px-4 text-slate-400">{d.province}</td>
+                        <td className="py-3 px-4 text-slate-400">{d.province || 'Nepal'}</td>
                         <td className="py-3 px-4 font-mono font-medium text-slate-300">
-                          {d.rain_1h_mm?.toFixed(1) || '0.0'}
+                          {r1.toFixed(1)}
                         </td>
                         <td className="py-3 px-4 font-mono text-slate-300">
-                          {d.rain_3h_mm?.toFixed(1) || '0.0'}
+                          {r3.toFixed(1)}
                         </td>
                         <td className="py-3 px-4 font-mono text-slate-300">
-                          {d.rain_6h_mm?.toFixed(1) || '0.0'}
+                          {r6.toFixed(1)}
                         </td>
                         <td className="py-3 px-4 font-mono text-slate-300">
-                          {d.rain_12h_mm?.toFixed(1) || '0.0'}
+                          {r12.toFixed(1)}
                         </td>
                         <td className="py-3 px-4 font-mono font-bold text-sky-400">
                           {r24.toFixed(1)}
                         </td>
                         <td className="py-3 px-4 font-mono text-slate-300">
-                          {d.rain_48h_mm?.toFixed(1) || '0.0'}
+                          {r48.toFixed(1)}
                         </td>
                         <td className="py-3 px-4 font-mono text-slate-300">
-                          {d.rain_72h_mm?.toFixed(1) || '0.0'}
+                          {r72.toFixed(1)}
                         </td>
                         <td className="py-3 px-4">
                           <span
@@ -262,7 +297,7 @@ export default function RainfallPage() {
                         </td>
                         <td className="py-3 px-4 text-right">
                           <Link
-                            to={`/district/${d.district}`}
+                            to={`/district/${distName}`}
                             className="text-blue-400 hover:text-blue-300 font-semibold"
                           >
                             Profile

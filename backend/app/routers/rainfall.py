@@ -57,6 +57,8 @@ def get_rainfall_overview(db: Session = Depends(get_db)):
 
         item = RainfallDistrictItem(
             district_name=d.district_name,
+            province=d.province,
+            palikas=[m.municipality_name for m in d.municipalities] if d.municipalities else [],
             rain_1h=round(mm_24h / 8.0, 1),
             rain_3h=round(mm_24h / 4.0, 1),
             rain_6h=round(mm_24h / 2.0, 1),

@@ -35,13 +35,15 @@ export default function AlertsPage() {
   const loadAlerts = async () => {
     try {
       setLoading(true);
-      const data = await api.getActiveAlerts({
+      const data: any = await api.getActiveAlerts({
         priority: priorityFilter !== 'all' ? priorityFilter : undefined,
         hazard: hazardFilter !== 'all' ? hazardFilter : undefined,
       });
-      setAlerts(data || []);
+      const list = Array.isArray(data) ? data : (data?.alerts || []);
+      setAlerts(list);
     } catch (err) {
       console.error('Failed to load active alerts:', err);
+      setAlerts([]);
     } finally {
       setLoading(false);
     }
@@ -61,9 +63,13 @@ export default function AlertsPage() {
     }
   };
 
-  const filteredAlerts = alerts.filter((a) =>
-    a.district.toLowerCase().includes(searchDistrict.toLowerCase())
-  );
+  const filteredAlerts = (Array.isArray(alerts) ? alerts : []).filter((a) => {
+    if (!a) return false;
+    const query = searchDistrict.toLowerCase();
+    const dist = (a.district || '').toLowerCase();
+    const title = (a.title || '').toLowerCase();
+    return dist.includes(query) || title.includes(query);
+  });
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">

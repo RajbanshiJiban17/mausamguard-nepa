@@ -28,23 +28,28 @@ export default function RiversPage() {
   const loadStations = async () => {
     try {
       setLoading(true);
-      const data = await api.getRiverStations({
+      const data: any = await api.getRiverStations({
         basin: basinFilter !== 'all' ? basinFilter : undefined,
       });
-      setStations(data || []);
+      const list = Array.isArray(data) ? data : (data?.stations || []);
+      setStations(list);
     } catch (err) {
       console.error('Failed to load river stations:', err);
+      setStations([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredStations = stations.filter((st) =>
-    st.station_name.toLowerCase().includes(search.toLowerCase()) ||
-    st.district.toLowerCase().includes(search.toLowerCase()) ||
-    (st.river_name && st.river_name.toLowerCase().includes(search.toLowerCase())) ||
-    (st.basin && st.basin.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredStations = (Array.isArray(stations) ? stations : []).filter((st) => {
+    if (!st) return false;
+    const query = search.toLowerCase();
+    const name = (st.station_name || '').toLowerCase();
+    const dist = (st.district || '').toLowerCase();
+    const riv = (st.river_name || '').toLowerCase();
+    const bas = (st.basin || '').toLowerCase();
+    return name.includes(query) || dist.includes(query) || riv.includes(query) || bas.includes(query);
+  });
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">

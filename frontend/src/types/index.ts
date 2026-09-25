@@ -94,6 +94,7 @@ export interface Alert {
   district: string;
   district_id: number;
   hazard: string;
+  title?: string;
   risk_level: RiskLevel;
   priority: AlertPriority;
   score: number;

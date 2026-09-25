@@ -72,10 +72,10 @@ export default function MapPage() {
       zoomControl: false,
     });
 
-    // Dark Basemap (CartoDB Dark Matter)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd',
+    // Basemap (Clean OpenStreetMap tiles without API key restrictions)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abc',
       maxZoom: 19
     }).addTo(map);
 
@@ -115,7 +115,7 @@ export default function MapPage() {
 
         setGeojsonFeatures(geojsonRes);
         setDistrictsData(districtsList || []);
-        setRiverStations(riversRes || []);
+        setRiverStations(Array.isArray(riversRes) ? riversRes : riversRes?.stations || []);
       } catch (err) {
         console.error('Failed to load map data:', err);
       } finally {
@@ -167,7 +167,7 @@ export default function MapPage() {
 
         layer.bindTooltip(
           `<div class="p-1 font-sans">
-            <div class="font-bold text-sm text-white">${name}</div>
+            <div class="font-bold text-sm text-sky-300">${name}</div>
             <div class="text-xs text-slate-300">Province: ${d?.province || 'Nepal'}</div>
             <div class="text-xs font-semibold mt-1" style="color:${RISK_COLORS[d?.current_overall_risk || 'LOW']}">
               Risk: ${d?.current_overall_risk || 'LOW'}
