@@ -13,19 +13,24 @@ export const RiskBadge: React.FC<RiskBadgeProps> = ({ level, size = 'md', showIc
 
   let badgeClass = 'badge-low';
   let Icon = ShieldCheck;
+  let nepaliLabel = 'न्यून';
 
   if (norm === 'MODERATE' || norm === 'WATCH') {
     badgeClass = 'badge-moderate';
     Icon = AlertCircle;
+    nepaliLabel = 'मध्यम';
   } else if (norm === 'HIGH' || norm === 'WARNING') {
     badgeClass = 'badge-high';
     Icon = AlertTriangle;
+    nepaliLabel = 'उच्च';
   } else if (norm === 'VERY HIGH' || norm === 'HIGH WARNING') {
     badgeClass = 'badge-very-high';
     Icon = Flame;
+    nepaliLabel = 'अति उच्च';
   } else if (norm === 'CRITICAL') {
     badgeClass = 'badge-critical';
     Icon = AlertOctagon;
+    nepaliLabel = 'खतरा';
   }
 
   const sizeClasses = {
@@ -44,10 +49,10 @@ export const RiskBadge: React.FC<RiskBadgeProps> = ({ level, size = 'md', showIc
     <span
       className={`inline-flex items-center rounded-full transition-all ${badgeClass} ${sizeClasses[size]}`}
       role="status"
-      aria-label={`Risk level: ${norm}`}
+      aria-label={`Risk level: ${norm} (${nepaliLabel})`}
     >
       {showIcon && <Icon size={iconSizes[size]} className="shrink-0" />}
-      <span>{norm}</span>
+      <span>{norm} • {nepaliLabel}</span>
     </span>
   );
 };

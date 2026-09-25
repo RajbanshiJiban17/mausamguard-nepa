@@ -279,20 +279,38 @@ export default function DistrictDetailPage() {
           <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6">
             <h3 className="text-base font-bold text-white mb-1 flex items-center gap-2">
               <Building2 className="w-4 h-4 text-blue-400" />
-              <span>Municipalities & Rural Municipalities ({district.municipalities.length} Palikas)</span>
+              <span>Municipalities & Rural Municipalities ({district.municipalities.length} Palikas / स्थानीय तहहरू)</span>
             </h3>
-            <p className="text-xs text-slate-400 mb-4">Official local administrative subdivisions.</p>
+            <p className="text-xs text-slate-400 mb-4">Official local administrative subdivisions in this district.</p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5">
-              {district.municipalities.map((palika: any, idx: number) => (
-                <div
-                  key={idx}
-                  className="bg-slate-950/60 border border-slate-800/80 p-2.5 rounded-xl text-xs hover:border-slate-700 transition-colors"
-                >
-                  <div className="font-semibold text-slate-200 truncate">{palika.municipality_name}</div>
-                  <div className="text-[10px] text-slate-500 mt-0.5">{palika.type || 'Local Government'}</div>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3">
+              {district.municipalities.map((palika: any, idx: number) => {
+                const name = palika.palika_name || palika.municipality_name || palika.name || 'Palika';
+                const lower = name.toLowerCase();
+                const isRural = lower.includes('rural') || lower.includes('गाउँ') || lower.includes('gau');
+                const isSubMetro = lower.includes('sub-metropolitan') || lower.includes('उपमहानगर');
+                const isMetro = lower.includes('metropolitan') && !isSubMetro;
+                const typeLabel = palika.type || (
+                  isMetro ? 'महानगरपालिका' : isSubMetro ? 'उपमहानगरपालिका' : isRural ? 'गाउँपालिका' : 'नगरपालिका'
+                );
+
+                return (
+                  <div
+                    key={idx}
+                    className="bg-slate-950/70 border border-slate-800/90 p-3 rounded-xl text-xs hover:border-blue-500/50 transition-all flex flex-col justify-between shadow-sm"
+                  >
+                    <div className="font-bold text-white text-xs leading-snug" title={name}>
+                      {name}
+                    </div>
+                    <div className="flex items-center justify-between mt-2 pt-1 border-t border-slate-800/60 text-[10px]">
+                      <span className="text-cyan-400 font-medium">{typeLabel}</span>
+                      {palika.total_events !== undefined && palika.total_events > 0 && (
+                        <span className="text-slate-400 font-mono">{palika.total_events} events</span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

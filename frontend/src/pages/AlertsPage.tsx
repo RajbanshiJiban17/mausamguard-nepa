@@ -11,7 +11,11 @@ import {
   Search,
   ExternalLink,
   ChevronRight,
-  BellRing
+  BellRing,
+  Flame,
+  AlertOctagon,
+  AlertCircle,
+  ShieldCheck
 } from 'lucide-react';
 import { api } from '../api/client';
 import RiskBadge from '../components/RiskBadge';
@@ -182,19 +186,44 @@ export default function AlertsPage() {
               >
                 <div className="space-y-1.5 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span
-                      className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
-                        alt.priority === 'CRITICAL'
-                          ? 'bg-purple-900/50 text-purple-300 border border-purple-700/60'
-                          : alt.priority === 'HIGH WARNING'
-                          ? 'bg-red-900/50 text-red-300 border border-red-700/60'
-                          : alt.priority === 'WARNING'
-                          ? 'bg-amber-900/50 text-amber-300 border border-amber-700/60'
-                          : 'bg-blue-900/50 text-blue-300 border border-blue-700/60'
-                      }`}
-                    >
-                      {alt.priority}
-                    </span>
+                    {(() => {
+                      const getPriorityBadge = (priority: string) => {
+                        switch (priority) {
+                          case 'CRITICAL':
+                            return {
+                              label: 'CRITICAL • आपतकालीन खतरा',
+                              icon: <Flame className="w-3.5 h-3.5 text-purple-400 animate-pulse" />,
+                              style: 'bg-purple-950/70 text-purple-200 border-purple-700/60 shadow-md shadow-purple-950/50'
+                            };
+                          case 'HIGH WARNING':
+                            return {
+                              label: 'HIGH WARNING • उच्च चेतावनी',
+                              icon: <AlertOctagon className="w-3.5 h-3.5 text-red-400" />,
+                              style: 'bg-red-950/70 text-red-200 border-red-700/60 shadow-md shadow-red-950/50'
+                            };
+                          case 'WARNING':
+                            return {
+                              label: 'WARNING • सतर्कता चेतावनी',
+                              icon: <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />,
+                              style: 'bg-amber-950/70 text-amber-200 border-amber-700/60'
+                            };
+                          case 'WATCH':
+                          default:
+                            return {
+                              label: 'WATCH / LOW • मध्यम निगरानी',
+                              icon: <Info className="w-3.5 h-3.5 text-blue-400" />,
+                              style: 'bg-blue-950/70 text-blue-200 border-blue-700/60'
+                            };
+                        }
+                      };
+                      const p = getPriorityBadge(alt.priority);
+                      return (
+                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold tracking-wide border ${p.style}`}>
+                          {p.icon}
+                          <span>{p.label}</span>
+                        </span>
+                      );
+                    })()}
 
                     <span className="text-sm font-bold text-white">
                       {alt.district} District

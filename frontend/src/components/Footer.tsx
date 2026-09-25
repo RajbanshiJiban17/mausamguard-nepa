@@ -76,7 +76,7 @@ export const Footer: React.FC = () => {
 
         <div className="pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
           <div>
-            © 2026 MausamGuard Nepal. Built for disaster risk reduction and community resilience in the Himalaya.
+            © 2026 MausamGuard Nepal • <strong>Copyright by Jiban Chaudhary (जीवन चौधरी)</strong>. Built for disaster risk reduction and community resilience in Nepal.
           </div>
           <div className="flex items-center gap-4">
             <Link to="/sources" className="hover:text-slate-200">Data Attribution</Link>

@@ -284,6 +284,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
             {!collapsed && <span>Portal Sign In</span>}
           </Link>
         )}
+
+        {!collapsed && (
+          <div className="pt-2 mt-2 border-t border-slate-800/60 text-[9px] text-slate-500 text-center font-mono">
+            © 2026 • Jiban Chaudhary (जीवन चौधरी)
+          </div>
+        )}
       </div>
     </aside>
   );
