@@ -1,9 +1,17 @@
-# Multi-Hazard Early Warning Backend Dockerfile
-FROM python:3.12-slim
+# Multi-Stage Full-Stack Dockerfile (Dynamic Backend + Frontend SPA)
+# Stage 1: Build React + Vite Frontend
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend/ ./
+RUN npm run build
 
+# Stage 2: Python 3.12 Multi-Hazard Risk Decision Engine Runtime
+FROM python:3.12-slim
 WORKDIR /app
 
-# Install system dependencies (for geospatial libraries if needed)
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
@@ -13,11 +21,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend code, data, and scripts
+# Copy backend application, historical datasets, and scripts
 COPY backend/ backend/
 COPY data/ data/
 COPY scripts/ scripts/
 COPY .env.example .env.example
+
+# Copy built frontend SPA from Stage 1
+COPY --from=frontend-builder /app/frontend/dist frontend/dist
 
 ENV PYTHONPATH="/app:/app/backend"
 ENV PORT=8000

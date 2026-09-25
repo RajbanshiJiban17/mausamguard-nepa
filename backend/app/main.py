@@ -130,3 +130,28 @@ app.include_router(alerts_router, prefix=api_v1)
 app.include_router(agriculture_router, prefix=api_v1)
 app.include_router(sources_router, prefix=api_v1)
 app.include_router(admin_router, prefix=api_v1)
+
+# 5. Serve React Frontend SPA directly in Production
+import os
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+frontend_dist = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "frontend", "dist")
+if not os.path.exists(frontend_dist):
+    frontend_dist = os.path.join(os.getcwd(), "frontend", "dist")
+
+if os.path.exists(frontend_dist):
+    assets_dir = os.path.join(frontend_dist, "assets")
+    if os.path.exists(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa_frontend(full_path: str):
+        # Exclude API endpoints and documentation from SPA catch-all
+        if full_path.startswith("api") or full_path in ["docs", "redoc", "openapi.json", "health", "ready", "system-status"]:
+            raise HTTPException(status_code=404, detail="Not Found")
+        file_path = os.path.join(frontend_dist, full_path)
+        if full_path and os.path.exists(file_path) and os.path.isfile(file_path):
+            return FileResponse(file_path)
+        return FileResponse(os.path.join(frontend_dist, "index.html"))
+

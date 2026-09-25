@@ -1,7 +1,7 @@
 services:
-  # 1. FastAPI Multi-Hazard Risk Backend Service
+  # 100% Dynamic Full-Stack Multi-Hazard Early Warning & Decision Support System
   - type: web
-    name: mausamguard-backend
+    name: mausamguard-nepal
     env: docker
     dockerfilePath: Dockerfile.backend
     plan: free
@@ -16,20 +16,3 @@ services:
       - key: DATABASE_URL
         value: sqlite:///./mausamguard.db
     healthCheckPath: /api/v1/health
-
-  # 2. React + Vite Early Warning Dashboard (Free Static Hosting)
-  - type: static
-    name: mausamguard-frontend
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: mausamguard-backend
-          property: host
