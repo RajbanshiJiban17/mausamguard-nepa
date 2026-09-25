@@ -120,7 +120,14 @@ export const api = {
   getRiverStationDetail: (stationId: string) => request<any>(`/river-stations/${stationId}`),
 
   // Forecast
-  getDistrictForecast: (districtName: string) => request<any>(`/forecast/${districtName}`),
+  getDistrictForecast: (districtName: string, palika?: string, days: number = 7) => {
+    const query = new URLSearchParams();
+    if (palika) query.append('palika', palika);
+    if (days) query.append('days', String(days));
+    const qs = query.toString() ? `?${query.toString()}` : '';
+    return request<any>(`/forecast/${districtName}${qs}`);
+  },
+  getDistrictPalikas: (districtName: string) => request<any[]>(`/forecast/${districtName}/palikas`),
   getNationalForecastSummary: () => request<any>('/forecast/summary/national'),
 
   // Agriculture

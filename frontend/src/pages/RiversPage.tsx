@@ -14,16 +14,24 @@ import {
 } from 'lucide-react';
 import { api } from '../api/client';
 import DisclaimerBanner from '../components/DisclaimerBanner';
+import Pagination from '../components/Pagination';
 
 export default function RiversPage() {
   const [stations, setStations] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [basinFilter, setBasinFilter] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 9;
 
   useEffect(() => {
+    setCurrentPage(1);
     loadStations();
   }, [basinFilter]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
 
   const loadStations = async () => {
     try {
@@ -167,72 +175,88 @@ export default function RiversPage() {
             <p className="text-xs text-slate-500">Try changing your search query or river basin filter.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredStations.map((st: any) => {
-              const liveStage = st.current_water_level ?? st.water_level;
-              return (
-                <div
-                  key={st.id}
-                  className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg"
-                >
-                  <div>
-                    <div className="flex items-start justify-between mb-2">
-                      <span className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold">
-                        {st.basin}
-                      </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800">
-                        ID: {st.station_id}
-                      </span>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredStations
+                .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+                .map((st: any) => {
+                const liveStage = st.current_water_level ?? st.water_level;
+                return (
+                  <div
+                    key={st.id}
+                    className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold">
+                          {st.basin}
+                        </span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800">
+                          ID: {st.station_id}
+                        </span>
+                      </div>
+
+                      <h3 className="text-base font-bold text-white mb-0.5">
+                        {st.station_name}
+                      </h3>
+                      <div className="text-xs text-slate-400 mb-2">
+                        River: <strong className="text-sky-300">{st.river_name}</strong> | District:{' '}
+                        <Link to={`/district/${st.district}`} className="text-blue-400 hover:underline">
+                          {st.district}
+                        </Link>
+                      </div>
+
+                      {st.notes && (
+                        <p className="text-[11px] text-slate-400 bg-slate-950/60 p-2 rounded-lg border border-slate-800/60 mb-3 leading-relaxed">
+                          {st.notes}
+                        </p>
+                      )}
+
+                      {/* Thresholds Box */}
+                      <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-2 text-xs mb-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-400">Warning Level:</span>
+                          <span className="font-mono font-bold text-amber-400">
+                            {st.warning_level_m !== null ? `${st.warning_level_m} m` : 'N/A'}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-400">Danger Level:</span>
+                          <span className="font-mono font-bold text-red-400">
+                            {st.danger_level_m !== null ? `${st.danger_level_m} m` : 'N/A'}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
+                          <span className="text-slate-400">Live Stage:</span>
+                          <span className="font-mono text-[11px] text-amber-500 italic">
+                            {liveStage != null ? `${liveStage.toFixed(2)} m` : 'Feed unavailable (DHM offline)'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
 
-                    <h3 className="text-base font-bold text-white mb-0.5">
-                      {st.station_name}
-                    </h3>
-                    <div className="text-xs text-slate-400 mb-2">
-                      River: <strong className="text-sky-300">{st.river_name}</strong> | District:{' '}
-                      <Link to={`/district/${st.district}`} className="text-blue-400 hover:underline">
-                        {st.district}
-                      </Link>
-                    </div>
-
-                    {st.notes && (
-                      <p className="text-[11px] text-slate-400 bg-slate-950/60 p-2 rounded-lg border border-slate-800/60 mb-3 leading-relaxed">
-                        {st.notes}
-                      </p>
-                    )}
-
-                    {/* Thresholds Box */}
-                    <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-2 text-xs mb-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-400">Warning Level:</span>
-                        <span className="font-mono font-bold text-amber-400">
-                          {st.warning_level_m !== null ? `${st.warning_level_m} m` : 'N/A'}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-slate-400">Danger Level:</span>
-                        <span className="font-mono font-bold text-red-400">
-                          {st.danger_level_m !== null ? `${st.danger_level_m} m` : 'N/A'}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
-                        <span className="text-slate-400">Live Stage:</span>
-                        <span className="font-mono text-[11px] text-amber-500 italic">
-                          {liveStage != null ? `${liveStage.toFixed(2)} m` : 'Feed unavailable (DHM offline)'}
-                        </span>
-                      </div>
+                    <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
+                      <span>Source: {st.source}</span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" /> Benchmark Ref
+                      </span>
                     </div>
                   </div>
+                );
+              })}
+            </div>
 
-                  <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
-                    <span>Source: {st.source}</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" /> Benchmark Ref
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+            {/* Pagination Controls */}
+            <div className="rounded-2xl overflow-hidden border border-slate-800">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(filteredStations.length / PAGE_SIZE) || 1}
+                totalRecords={filteredStations.length}
+                pageSize={PAGE_SIZE}
+                onPageChange={(p) => setCurrentPage(p)}
+                itemName="river monitoring stations"
+              />
+            </div>
           </div>
         )}
       </main>

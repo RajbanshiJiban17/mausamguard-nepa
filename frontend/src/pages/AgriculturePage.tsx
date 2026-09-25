@@ -16,12 +16,19 @@ import {
 import { api } from '../api/client';
 import RiskBadge from '../components/RiskBadge';
 import DisclaimerBanner from '../components/DisclaimerBanner';
+import Pagination from '../components/Pagination';
 
 export default function AgriculturePage() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
   const [selectedRisk, setSelectedRisk] = useState<string>('all');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 12;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, selectedRisk]);
 
   useEffect(() => {
     loadAgricultureData();
@@ -135,67 +142,83 @@ export default function AgriculturePage() {
             <p className="text-xs text-slate-500">Try changing your search query or risk filter.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {assessments.map((a: any, idx: number) => (
-              <div
-                key={idx}
-                className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-emerald-500/40 transition-colors shadow-lg"
-              >
-                <div>
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
-                      {a.province || 'Nepal'}
-                    </span>
-                    <RiskBadge level={a.crop_risk_level || 'LOW'} size="sm" />
-                  </div>
-
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    <Link to={`/district/${a.district_name || a.district}`} className="hover:text-emerald-400 text-sky-200">
-                      {a.district_name || a.district} District
-                    </Link>
-                  </h3>
-
-                  {/* Stressors Breakdown */}
-                  <div className="grid grid-cols-2 gap-2 text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800 mb-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Rain Stress:</span>
-                      <span className="font-semibold text-slate-200">{a.rainfall_stress_level || a.rainfall_stress || 'Low'}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Thermal:</span>
-                      <span className="font-semibold text-slate-200">{a.temperature_stress_level || a.temperature_stress || 'Optimal'}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Flood Risk:</span>
-                      <span className="font-semibold text-slate-200">{a.flood_exposure_level || a.flood_exposure || 'Low'}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Forecast Rain:</span>
-                      <span className="font-mono text-sky-400 font-bold">
-                        {(a.forecast_rainfall_mm ?? a.recent_rainfall_mm ?? a.latest_rainfall_mm ?? 0).toFixed(1)} mm
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {assessments
+                .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+                .map((a: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-emerald-500/40 transition-colors shadow-lg"
+                >
+                  <div>
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
+                        {a.province || 'Nepal'}
                       </span>
+                      <RiskBadge level={a.crop_risk_level || 'LOW'} size="sm" />
+                    </div>
+
+                    <h3 className="text-lg font-bold text-white mb-2">
+                      <Link to={`/district/${a.district_name || a.district}`} className="hover:text-emerald-400 text-sky-200">
+                        {a.district_name || a.district} District
+                      </Link>
+                    </h3>
+
+                    {/* Stressors Breakdown */}
+                    <div className="grid grid-cols-2 gap-2 text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800 mb-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400">Rain Stress:</span>
+                        <span className="font-semibold text-slate-200">{a.rainfall_stress_level || a.rainfall_stress || 'Low'}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400">Thermal:</span>
+                        <span className="font-semibold text-slate-200">{a.temperature_stress_level || a.temperature_stress || 'Optimal'}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400">Flood Risk:</span>
+                        <span className="font-semibold text-slate-200">{a.flood_exposure_level || a.flood_exposure || 'Low'}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400">Forecast Rain:</span>
+                        <span className="font-mono text-sky-400 font-bold">
+                          {(a.forecast_rainfall_mm ?? a.recent_rainfall_mm ?? a.latest_rainfall_mm ?? 0).toFixed(1)} mm
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Suggested Action */}
+                    <div className="bg-emerald-950/20 border border-emerald-900/30 p-3 rounded-xl text-xs space-y-1">
+                      <div className="font-semibold text-emerald-400 flex items-center gap-1.5 text-[11px]">
+                        <Info className="w-3.5 h-3.5" /> General Agro-Guidance
+                      </div>
+                      <p className="text-slate-300 leading-relaxed text-[11px]">
+                        {a.suggested_action || 'Maintain normal drainage channels. Monitor localized river overflow if rainfall intensifies.'}
+                      </p>
                     </div>
                   </div>
 
-                  {/* Suggested Action */}
-                  <div className="bg-emerald-950/20 border border-emerald-900/30 p-3 rounded-xl text-xs space-y-1">
-                    <div className="font-semibold text-emerald-400 flex items-center gap-1.5 text-[11px]">
-                      <Info className="w-3.5 h-3.5" /> General Agro-Guidance
-                    </div>
-                    <p className="text-slate-300 leading-relaxed text-[11px]">
-                      {a.suggested_action || 'Maintain normal drainage channels. Monitor localized river overflow if rainfall intensifies.'}
-                    </p>
+                  <div className="pt-3 mt-4 border-t border-slate-800/60 flex items-center justify-between text-xs text-blue-400">
+                    <Link to={`/district/${a.district}`} className="hover:underline flex items-center gap-1">
+                      <span>District Disaster Profile</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </Link>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                <div className="pt-3 mt-4 border-t border-slate-800/60 flex items-center justify-between text-xs text-blue-400">
-                  <Link to={`/district/${a.district}`} className="hover:underline flex items-center gap-1">
-                    <span>District Disaster Profile</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
-                </div>
-              </div>
-            ))}
+            {/* Pagination Controls */}
+            <div className="rounded-2xl overflow-hidden border border-slate-800">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(assessments.length / PAGE_SIZE) || 1}
+                totalRecords={assessments.length}
+                pageSize={PAGE_SIZE}
+                onPageChange={(p) => setCurrentPage(p)}
+                itemName="agricultural risk assessments"
+              />
+            </div>
           </div>
         )}
       </main>

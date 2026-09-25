@@ -400,7 +400,7 @@ def build_district_detail(district: District, db: Session) -> DistrictDetail:
         current_agriculture_risk=latest_risk.agriculture_risk_level if latest_risk else "LOW",
         active_alert_count=len(active_alerts) if active_alerts else (3 if d_name_lower == "kailali" else 0),
         latest_rainfall_mm=round(mm_24h, 1),
-        municipalities=district.municipalities[:12],
+        municipalities=district.municipalities,
         recent_events=event_dicts,
         active_alerts=alert_dicts,
         latest_weather=latest_weather,

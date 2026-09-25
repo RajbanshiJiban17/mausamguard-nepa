@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { api } from '../api/client';
 import DisclaimerBanner from '../components/DisclaimerBanner';
+import Pagination from '../components/Pagination';
 
 export default function AdminPage() {
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ export default function AdminPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [refreshMessage, setRefreshMessage] = useState<string | null>(null);
+  const [usersPage, setUsersPage] = useState<number>(1);
+  const [auditPage, setAuditPage] = useState<number>(1);
+  const ADMIN_PAGE_SIZE = 10;
 
   useEffect(() => {
     const token = localStorage.getItem('mg_access_token');
@@ -310,7 +314,9 @@ export default function AdminPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60 font-sans">
-                  {users.map((u) => (
+                  {users
+                    .slice((usersPage - 1) * ADMIN_PAGE_SIZE, usersPage * ADMIN_PAGE_SIZE)
+                    .map((u) => (
                     <tr key={u.id} className="hover:bg-slate-800/40">
                       <td className="py-3 px-4 font-bold text-white">{u.username}</td>
                       <td className="py-3 px-4 text-slate-400 font-mono">{u.email}</td>
@@ -343,6 +349,15 @@ export default function AdminPage() {
                 </tbody>
               </table>
             </div>
+
+            <Pagination
+              currentPage={usersPage}
+              totalPages={Math.ceil(users.length / ADMIN_PAGE_SIZE) || 1}
+              totalRecords={users.length}
+              pageSize={ADMIN_PAGE_SIZE}
+              onPageChange={(p) => setUsersPage(p)}
+              itemName="users"
+            />
           </div>
         )}
 
@@ -373,7 +388,9 @@ export default function AdminPage() {
                       </td>
                     </tr>
                   ) : (
-                    auditLogs.map((log: any, idx: number) => (
+                    auditLogs
+                      .slice((auditPage - 1) * ADMIN_PAGE_SIZE, auditPage * ADMIN_PAGE_SIZE)
+                      .map((log: any, idx: number) => (
                       <tr key={idx} className="hover:bg-slate-800/40">
                         <td className="py-3 px-4 font-mono text-slate-400 whitespace-nowrap">
                           {new Date(log.created_at).toLocaleString()}
@@ -398,6 +415,15 @@ export default function AdminPage() {
                 </tbody>
               </table>
             </div>
+
+            <Pagination
+              currentPage={auditPage}
+              totalPages={Math.ceil(auditLogs.length / ADMIN_PAGE_SIZE) || 1}
+              totalRecords={auditLogs.length}
+              pageSize={ADMIN_PAGE_SIZE}
+              onPageChange={(p) => setAuditPage(p)}
+              itemName="audit trail records"
+            />
           </div>
         )}
       </main>

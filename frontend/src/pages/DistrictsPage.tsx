@@ -19,6 +19,7 @@ import {
 import { api } from '../api/client';
 import RiskBadge from '../components/RiskBadge';
 import DisclaimerBanner from '../components/DisclaimerBanner';
+import Pagination from '../components/Pagination';
 import { DistrictSummary, RiskLevel } from '../types';
 
 export default function DistrictsPage() {
@@ -29,10 +30,17 @@ export default function DistrictsPage() {
   const [selectedRisk, setSelectedRisk] = useState<string>('all');
   const [sortField, setSortField] = useState<string>('events');
   const [sortAsc, setSortAsc] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 12;
 
   useEffect(() => {
+    setCurrentPage(1);
     loadDistricts();
   }, [selectedProvince]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, selectedRisk]);
 
   const loadDistricts = async () => {
     try {
@@ -217,81 +225,97 @@ export default function DistrictsPage() {
             <p className="text-xs text-slate-500">Try adjusting your province or risk level filters.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredDistricts.map((d) => (
-              <Link
-                key={d.id}
-                to={`/district/${d.district_name}`}
-                className="group bg-slate-900/50 hover:bg-slate-900/90 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between shadow-lg hover:shadow-blue-500/5"
-              >
-                <div>
-                  <div className="flex items-start justify-between mb-2">
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredDistricts
+                .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+                .map((d) => (
+                  <Link
+                    key={d.id}
+                    to={`/district/${d.district_name}`}
+                    className="group bg-slate-900/50 hover:bg-slate-900/90 border border-slate-800/80 hover:border-blue-500/40 rounded-2xl p-5 transition-all duration-200 flex flex-col justify-between shadow-lg hover:shadow-blue-500/5"
+                  >
                     <div>
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-                        {d.province}
-                      </span>
-                      <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
-                        {d.district_name}
-                      </h3>
-                    </div>
-                    <RiskBadge level={d.current_overall_risk || 'LOW'} size="sm" />
-                  </div>
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                            {d.province}
+                          </span>
+                          <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                            {d.district_name}
+                          </h3>
+                        </div>
+                        <RiskBadge level={d.current_overall_risk || 'LOW'} size="sm" />
+                      </div>
 
-                  {/* Sub-hazards */}
-                  <div className="grid grid-cols-3 gap-1.5 my-3 bg-slate-950/60 p-2 rounded-xl border border-slate-800/50 text-center">
-                    <div>
-                      <div className="text-[9px] text-slate-500 flex items-center justify-center gap-1">
-                        <Droplets className="w-2.5 h-2.5 text-blue-400" /> Flood
+                      {/* Sub-hazards */}
+                      <div className="grid grid-cols-3 gap-1.5 my-3 bg-slate-950/60 p-2 rounded-xl border border-slate-800/50 text-center">
+                        <div>
+                          <div className="text-[9px] text-slate-500 flex items-center justify-center gap-1">
+                            <Droplets className="w-2.5 h-2.5 text-blue-400" /> Flood
+                          </div>
+                          <div className="text-[10px] font-bold text-slate-300 mt-0.5">
+                            {d.current_flood_risk || 'LOW'}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[9px] text-slate-500 flex items-center justify-center gap-1">
+                            <Mountain className="w-2.5 h-2.5 text-amber-400" /> Landslide
+                          </div>
+                          <div className="text-[10px] font-bold text-slate-300 mt-0.5">
+                            {d.current_landslide_risk || 'LOW'}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[9px] text-slate-500 flex items-center justify-center gap-1">
+                            <AlertTriangle className="w-2.5 h-2.5 text-emerald-400" /> Agri
+                          </div>
+                          <div className="text-[10px] font-bold text-slate-300 mt-0.5">
+                            {d.current_agriculture_risk || 'LOW'}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-[10px] font-bold text-slate-300 mt-0.5">
-                        {d.current_flood_risk || 'LOW'}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[9px] text-slate-500 flex items-center justify-center gap-1">
-                        <Mountain className="w-2.5 h-2.5 text-amber-400" /> Landslide
-                      </div>
-                      <div className="text-[10px] font-bold text-slate-300 mt-0.5">
-                        {d.current_landslide_risk || 'LOW'}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[9px] text-slate-500 flex items-center justify-center gap-1">
-                        <AlertTriangle className="w-2.5 h-2.5 text-emerald-400" /> Agri
-                      </div>
-                      <div className="text-[10px] font-bold text-slate-300 mt-0.5">
-                        {d.current_agriculture_risk || 'LOW'}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Key Metrics */}
-                  <div className="space-y-1.5 text-xs text-slate-400">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500">Historical Events:</span>
-                      <span className="text-white font-mono font-medium">{d.total_events}</span>
+                      {/* Key Metrics */}
+                      <div className="space-y-1.5 text-xs text-slate-400">
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-500">Historical Events:</span>
+                          <span className="text-white font-mono font-medium">{d.total_events}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-500">Fatalities (1971–2026):</span>
+                          <span className="text-red-400 font-mono font-medium">{d.total_deaths}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-slate-500">Latest 24h Rain:</span>
+                          <span className="text-sky-400 font-mono font-medium">
+                            {d.latest_rainfall_mm !== undefined && d.latest_rainfall_mm !== null
+                              ? `${d.latest_rainfall_mm.toFixed(1)} mm`
+                              : '0.0 mm'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500">Fatalities (1971–2026):</span>
-                      <span className="text-red-400 font-mono font-medium">{d.total_deaths}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500">Latest 24h Rain:</span>
-                      <span className="text-sky-400 font-mono font-medium">
-                        {d.latest_rainfall_mm !== undefined && d.latest_rainfall_mm !== null
-                          ? `${d.latest_rainfall_mm.toFixed(1)} mm`
-                          : '0.0 mm'}
-                      </span>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-blue-400 font-medium group-hover:text-blue-300">
-                  <span>View Full Profile</span>
-                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </div>
-              </Link>
-            ))}
+                    <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-blue-400 font-medium group-hover:text-blue-300">
+                      <span>View Full Profile</span>
+                      <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </Link>
+                ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="rounded-2xl overflow-hidden border border-slate-800">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(filteredDistricts.length / PAGE_SIZE) || 1}
+                totalRecords={filteredDistricts.length}
+                pageSize={PAGE_SIZE}
+                onPageChange={(p) => setCurrentPage(p)}
+                itemName="districts"
+              />
+            </div>
           </div>
         )}
       </main>

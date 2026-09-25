@@ -29,8 +29,13 @@ class ForecastHorizonItem(BaseModel):
 
 class WeatherForecastOut(BaseModel):
     district_name: str
+    palika_name: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
     horizons: List[ForecastHorizonItem]
+    daily_forecast: Optional[List[Dict[str, Any]]] = None
     hourly_series: Optional[List[Dict[str, Any]]] = None
+    total_7d_rainfall_mm: Optional[float] = None
     source: str
     retrieved_at: datetime
 

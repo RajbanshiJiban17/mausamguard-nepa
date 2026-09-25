@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { api } from '../api/client';
 import DisclaimerBanner from '../components/DisclaimerBanner';
+import Pagination from '../components/Pagination';
 
 export default function RainfallPage() {
   const [data, setData] = useState<any>(null);
@@ -21,6 +22,12 @@ export default function RainfallPage() {
   const [search, setSearch] = useState<string>('');
   const [sortField, setSortField] = useState<string>('rain24h');
   const [sortAsc, setSortAsc] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const PAGE_SIZE = 15;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, sortField, sortAsc]);
 
   useEffect(() => {
     loadRainfall();
@@ -231,7 +238,9 @@ export default function RainfallPage() {
                     </td>
                   </tr>
                 ) : (
-                  districts.map((d: any, idx: number) => {
+                  districts
+                    .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+                    .map((d: any, idx: number) => {
                     const distName = d.district || d.district_name || 'District';
                     const r24 = d.rain_24h_mm ?? d.rain_24h ?? 0;
                     const r1 = d.rain_1h_mm ?? d.rain_1h ?? 0;
@@ -310,6 +319,16 @@ export default function RainfallPage() {
               </tbody>
             </table>
           </div>
+
+          {/* Table Pagination */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(districts.length / PAGE_SIZE) || 1}
+            totalRecords={districts.length}
+            pageSize={PAGE_SIZE}
+            onPageChange={(p) => setCurrentPage(p)}
+            itemName="district observation records"
+          />
         </div>
       </main>
     </div>
