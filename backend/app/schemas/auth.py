@@ -12,6 +12,10 @@ class UserLogin(BaseModel):
     username_or_email: str
     password: str
 
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
 class UserCreate(BaseModel):
     email: EmailStr
     username: str

@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User, Role, SavedLocation
-from app.schemas.auth import UserLogin, UserCreate, Token, UserOut, SavedLocationCreate, SavedLocationOut
+from app.schemas.auth import UserLogin, UserCreate, PasswordChange, Token, UserOut, SavedLocationCreate, SavedLocationOut
 from app.schemas.common import ApiResponse
 from app.security.auth import verify_password, get_password_hash, create_access_token
 from app.security.permissions import get_current_user, get_current_user_optional
@@ -138,6 +138,66 @@ def logout(
 @router.get("/me", response_model=ApiResponse[UserOut])
 def get_current_user_profile(current_user: User = Depends(get_current_user)):
     return ApiResponse(data=current_user)
+
+@router.post("/change-password", response_model=ApiResponse[dict])
+def change_password(
+    payload: PasswordChange,
+    request: Request,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Secure password modification endpoint.
+    Verifies existing credentials, validates new password complexity,
+    updates hash via bcrypt, and records security audit trail.
+    """
+    ip_addr = request.client.host if request.client else None
+
+    # 1. Verify current password
+    if not verify_password(payload.current_password, current_user.hashed_password):
+        log_audit_event(
+            db=db,
+            action="password_change_failed",
+            user_id=current_user.id,
+            username=current_user.username,
+            status="FAILED",
+            details={"reason": "Incorrect current password verification"},
+            ip_address=ip_addr
+        )
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="हालको पासवर्ड मिलेन (Current password does not match)."
+        )
+
+    # 2. Strict password validation
+    new_pw = payload.new_password.strip()
+    if len(new_pw) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="नयाँ पासवर्ड कम्तिमा ८ अक्षरको हुनुपर्छ (New password must be at least 8 characters)."
+        )
+    if new_pw == payload.current_password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="नयाँ पासवर्ड हालको पासवर्ड भन्दा फरक हुनुपर्छ (New password must be different from current password)."
+        )
+
+    # 3. Hash and save new password
+    current_user.hashed_password = get_password_hash(new_pw)
+    db.commit()
+
+    # 4. Audit trail
+    log_audit_event(
+        db=db,
+        action="password_change_success",
+        user_id=current_user.id,
+        username=current_user.username,
+        status="SUCCESS",
+        details={"message": "Password successfully updated via secure authenticated portal"},
+        ip_address=ip_addr
+    )
+
+    return ApiResponse(data={"message": "पासवर्ड सफलतापूर्वक परिवर्तन गरियो (Password updated successfully)."})
 
 @router.post("/saved-locations", response_model=ApiResponse[SavedLocationOut])
 def add_saved_location(

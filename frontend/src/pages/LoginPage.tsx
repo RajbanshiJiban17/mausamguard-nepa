@@ -7,15 +7,19 @@ import {
   AlertCircle,
   ArrowRight,
   RefreshCw,
-  KeyRound
+  Eye,
+  EyeOff,
+  Shield,
+  ArrowLeft
 } from 'lucide-react';
 import { api } from '../api/client';
 import DisclaimerBanner from '../components/DisclaimerBanner';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('MausamGuardAdmin2026!');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,45 +30,20 @@ export default function LoginPage() {
 
     try {
       const res = await api.login({
-        username_or_email: username,
+        username_or_email: username.trim(),
         password: password,
       });
 
       if (res.access_token) {
         localStorage.setItem('mg_access_token', res.access_token);
         localStorage.setItem('mg_user', JSON.stringify(res.user));
-        navigate('/');
+        navigate('/admin');
       } else {
         throw new Error('Access token was not returned.');
       }
     } catch (err: any) {
       console.error('Login error:', err);
-      setError(err.message || 'Authentication failed. Please verify credentials.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleQuickLogin = async () => {
-    setUsername('admin');
-    setPassword('MausamGuardAdmin2026!');
-    setError(null);
-    setLoading(true);
-    try {
-      const res = await api.login({
-        username_or_email: 'admin',
-        password: 'MausamGuardAdmin2026!',
-      });
-      if (res.access_token) {
-        localStorage.setItem('mg_access_token', res.access_token);
-        localStorage.setItem('mg_user', JSON.stringify(res.user));
-        navigate('/');
-      }
-    } catch (err: any) {
-      // Fallback local session if backend auth is offline
-      localStorage.setItem('mg_access_token', 'demo_operator_session_token');
-      localStorage.setItem('mg_user', JSON.stringify({ username: 'admin', role: 'ADMIN' }));
-      navigate('/');
+      setError(err.message || 'लगइन प्रमाणीकरण असफल भयो (Authentication failed). कृपया विवरण जाँच्नुहोस्।');
     } finally {
       setLoading(false);
     }
@@ -75,21 +54,21 @@ export default function LoginPage() {
       <DisclaimerBanner />
 
       <main className="flex-1 flex items-center justify-center p-4">
-        <div className="bg-slate-900/80 border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl backdrop-blur-xl space-y-6">
+        <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl backdrop-blur-xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="inline-flex p-3 rounded-2xl bg-blue-950/80 border border-blue-800/80 text-blue-400 mb-2">
+            <div className="inline-flex p-3 rounded-2xl bg-blue-950/80 border border-blue-800/80 text-blue-400 mb-2 shadow-lg shadow-blue-950/50">
               <ShieldCheck className="w-8 h-8" />
             </div>
-            <h1 className="text-2xl font-extrabold text-white">
-              Operational Portal Access
+            <h1 className="text-2xl font-extrabold text-white tracking-tight">
+              MausamGuard Operator Portal
             </h1>
             <p className="text-xs text-slate-400">
-              Sign in with your role-authorized credentials to manage early warning alerts, ingestion tasks, and security audit logs.
+              प्रणाली प्रशासन तथा सुरक्षा प्रमाणीकरण (Role-Based Access Control)
             </p>
           </div>
 
           {error && (
-            <div className="p-3 bg-red-950/40 border border-red-900/60 rounded-xl text-xs text-red-300 flex items-center gap-2">
+            <div className="p-3 bg-red-950/50 border border-red-800/80 rounded-xl text-xs text-red-200 flex items-center gap-2.5 shadow-sm">
               <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
               <span>{error}</span>
             </div>
@@ -98,78 +77,86 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Username or Email
+                Username or Official Email
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
+                  autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl text-xs text-white pl-9 pr-3 py-2.5 focus:outline-none focus:border-blue-500"
-                  placeholder="admin"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl text-xs text-white pl-9 pr-3 py-2.5 focus:outline-none focus:border-blue-500 transition-colors"
+                  placeholder="Enter authorized username..."
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Secret Passphrase
+                Password / सुरक्षित पासवर्ड
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl text-xs text-white pl-9 pr-3 py-2.5 focus:outline-none focus:border-blue-500 font-mono"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl text-xs text-white pl-9 pr-10 py-2.5 focus:outline-none focus:border-blue-500 font-mono transition-colors"
                   placeholder="••••••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 cursor-pointer p-0.5"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition-all shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs transition-all shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
               {loading ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Authenticating...</span>
+                  <span>प्रमाणीकरण हुँदैछ (Authenticating)...</span>
                 </>
               ) : (
                 <>
-                  <span>Sign In to Operator Console</span>
+                  <span>सुरक्षित लगइन गर्नुहोस् (Sign In to Console)</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Quick Evaluation Notice */}
-          <div className="bg-slate-950/70 border border-slate-800 p-3.5 rounded-2xl text-[11px] space-y-2">
-            <div className="font-semibold text-slate-300 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <KeyRound className="w-3.5 h-3.5 text-blue-400" />
-                <span>Evaluation Seed Credentials</span>
-              </span>
-              <button
-                type="button"
-                onClick={handleQuickLogin}
-                className="px-2.5 py-1 bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 rounded-lg text-[10px] font-semibold transition-all"
-              >
-                तुरुन्त लगइन (Quick Enter)
-              </button>
+          {/* High Security Guarantee Box */}
+          <div className="bg-slate-950/70 border border-slate-800/80 p-3.5 rounded-2xl text-[11px] space-y-2">
+            <div className="flex items-center gap-2 text-slate-300 font-semibold">
+              <Shield className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>उच्च सुरक्षा प्रणाली (High Security & Audit Protection)</span>
             </div>
-            <div className="text-slate-400 font-mono text-[10px]">
-              User: <span className="text-white">admin</span> | Role: <span className="text-emerald-400">ADMIN</span>
-            </div>
-            <div className="text-slate-400 font-mono text-[10px]">
-              Pass: <span className="text-white">MausamGuardAdmin2026!</span>
-            </div>
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              सबै लगइन प्रयासहरू सुरक्षित ईन्क्रिप्सन (Bcrypt Salted Hash) र अडिट लग (Security Audit Trail) मार्फत सुरक्षित गरिएका छन्। संवेदनशील डेटा सुरक्षित रहन्छ।
+            </p>
+          </div>
+
+          <div className="text-center pt-2">
+            <Link
+              to="/"
+              className="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1.5 transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>सार्वजनिक लाइभ पोर्टलमा फर्कनुहोस् (Public Portal)</span>
+            </Link>
           </div>
         </div>
       </main>

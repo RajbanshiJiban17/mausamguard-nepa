@@ -169,5 +169,10 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(payload),
     }),
+  changePassword: (payload: { current_password: string; new_password: string }) =>
+    request<any>('/auth/change-password', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
   getMe: () => request<any>('/auth/me'),
 };
