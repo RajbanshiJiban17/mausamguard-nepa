@@ -28,15 +28,8 @@ export default function App() {
         {/* Public Login Route */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Protected Dashboard & Operations Routes */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <RootLayout />
-            </ProtectedRoute>
-          }
-        >
+        {/* Public Dashboard & Operations Routes (Accessible immediately by everyone) */}
+        <Route path="/" element={<RootLayout />}>
           {/* Main National Dashboard */}
           <Route index element={<DashboardPage />} />
 
@@ -68,7 +61,14 @@ export default function App() {
 
           {/* System Operations & Governance */}
           <Route path="system-status" element={<SystemStatusPage />} />
-          <Route path="admin" element={<AdminPage />} />
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Fallback to Dashboard */}
           <Route path="*" element={<Navigate to="/" replace />} />
