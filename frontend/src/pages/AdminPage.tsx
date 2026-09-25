@@ -31,7 +31,17 @@ export default function AdminPage() {
   useEffect(() => {
     const token = localStorage.getItem('mg_access_token');
     if (!token) {
-      navigate('/login');
+      // Check if session cookie exists via /auth/me
+      api.getMe()
+        .then((user) => {
+          if (user) {
+            localStorage.setItem('mg_user', JSON.stringify(user));
+            loadData();
+          } else {
+            navigate('/login');
+          }
+        })
+        .catch(() => navigate('/login'));
       return;
     }
     loadData();
@@ -82,10 +92,16 @@ export default function AdminPage() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('mg_access_token');
-    localStorage.removeItem('mg_user');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await api.logout();
+    } catch {
+      // ignore
+    } finally {
+      localStorage.removeItem('mg_access_token');
+      localStorage.removeItem('mg_user');
+      navigate('/login');
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 from typing import List, Optional
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -8,18 +8,29 @@ from app.security.auth import decode_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
-def get_current_user(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
-    if not token:
+def extract_token(request: Request, bearer_token: Optional[str]) -> Optional[str]:
+    """Extract JWT token from Authorization Bearer header or secure session cookie."""
+    if bearer_token:
+        return bearer_token
+    return request.cookies.get("mg_access_token")
+
+def get_current_user(
+    request: Request,
+    token: Optional[str] = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+) -> User:
+    auth_token = extract_token(request, token)
+    if not auth_token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Authentication required. Please provide a valid Bearer token.",
+            detail="Authentication required. Please provide a valid Bearer token or session cookie.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    payload = decode_token(token)
+    payload = decode_token(auth_token)
     if not payload or payload.get("type") != "access":
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired authentication token.",
+            detail="Invalid or expired authentication session.",
             headers={"WWW-Authenticate": "Bearer"},
         )
     user_id = payload.get("user_id")
@@ -35,10 +46,15 @@ def get_current_user(token: Optional[str] = Depends(oauth2_scheme), db: Session 
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Inactive user account.")
     return user
 
-def get_current_user_optional(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Optional[User]:
-    if not token:
+def get_current_user_optional(
+    request: Request,
+    token: Optional[str] = Depends(oauth2_scheme),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    auth_token = extract_token(request, token)
+    if not auth_token:
         return None
-    payload = decode_token(token)
+    payload = decode_token(auth_token)
     if not payload or payload.get("type") != "access":
         return None
     user_id = payload.get("user_id")

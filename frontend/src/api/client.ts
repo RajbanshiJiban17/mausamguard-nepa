@@ -18,6 +18,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 
   const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
+    credentials: 'include',
     headers,
   });
 
@@ -55,7 +56,7 @@ export const api = {
         if (v !== undefined && v !== null && v !== '') query.append(k, String(v));
       });
     }
-    return fetch(`${API_BASE}/events?${query.toString()}`)
+    return fetch(`${API_BASE}/events?${query.toString()}`, { credentials: 'include' })
       .then(res => res.json()) as Promise<PaginatedResponse<any>>;
   },
   getEventsGeoJSON: (params?: { hazard?: string; district?: string; limit?: number }) => {
@@ -95,6 +96,7 @@ export const api = {
       });
     }
     return fetch(`${API_BASE}/alerts/history?${query.toString()}`, {
+      credentials: 'include',
       headers: getAuthHeader(),
     }).then(res => res.json()) as Promise<PaginatedResponse<any>>;
   },
@@ -140,6 +142,7 @@ export const api = {
   getDataQualityReport: () => request<any>('/admin/data-quality'),
   getAuditLogs: (page = 1, pageSize = 25) =>
     fetch(`${API_BASE}/admin/audit-logs?page=${page}&page_size=${pageSize}`, {
+      credentials: 'include',
       headers: getAuthHeader(),
     }).then(res => res.json()) as Promise<PaginatedResponse<any>>,
   triggerRefresh: () => request<string>('/admin/trigger-refresh', { method: 'POST' }),
@@ -149,6 +152,10 @@ export const api = {
     request<any>('/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
+    }),
+  logout: () =>
+    request<any>('/auth/logout', {
+      method: 'POST',
     }),
   register: (payload: any) =>
     request<any>('/auth/register', {

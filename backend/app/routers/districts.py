@@ -1,7 +1,8 @@
-from typing import List, Optional
+import time
+from typing import List, Optional, Dict, Any
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 from app.database import get_db
 from app.models.district import District, Municipality
 from app.models.risk import RiskAssessment
@@ -12,6 +13,28 @@ from app.schemas.common import ApiResponse
 from app.services.dhm_service import DHM_BENCHMARK_STATIONS
 
 router = APIRouter(prefix="/districts", tags=["Districts"])
+
+# In-memory GeoJSON cache for blazing-fast map rendering (60-second TTL)
+_GEOJSON_CACHE: Dict[str, Any] = {"data": None, "expires_at": 0.0}
+
+def get_latest_risks_map(db: Session) -> Dict[int, RiskAssessment]:
+    """Efficiently retrieve latest risk assessment per district without N+1 queries."""
+    all_risks = db.query(RiskAssessment).order_by(RiskAssessment.calculated_at.desc()).all()
+    latest_map = {}
+    for r in all_risks:
+        if r.district_id not in latest_map:
+            latest_map[r.district_id] = r
+    return latest_map
+
+def get_active_alert_counts(db: Session) -> Dict[int, int]:
+    """Retrieve active alert counts per district in a single grouped query."""
+    rows = (
+        db.query(Alert.district_id, func.count(Alert.id))
+        .filter(Alert.status == "ACTIVE")
+        .group_by(Alert.district_id)
+        .all()
+    )
+    return {row[0]: row[1] for row in rows}
 
 @router.get("", response_model=ApiResponse[List[DistrictSummary]])
 def list_districts(
@@ -27,17 +50,14 @@ def list_districts(
 
     districts = query.order_by(District.district_name.asc()).all()
 
-    # Join latest risk assessments
+    # Batch retrieve risks and alert counts (Eliminates 154 N+1 queries)
+    latest_risks_map = get_latest_risks_map(db)
+    alert_counts_map = get_active_alert_counts(db)
+
     summaries = []
     for d in districts:
-        latest_risk = db.query(RiskAssessment).filter(
-            RiskAssessment.district_id == d.id
-        ).order_by(RiskAssessment.calculated_at.desc()).first()
-
-        active_alerts = db.query(Alert).filter(
-            Alert.district_id == d.id,
-            Alert.status == "ACTIVE"
-        ).count()
+        latest_risk = latest_risks_map.get(d.id)
+        active_alerts = alert_counts_map.get(d.id, 0)
 
         summary = DistrictSummary(
             id=d.id,
@@ -70,28 +90,28 @@ def list_districts(
 
 @router.get("/geojson", response_model=ApiResponse[dict])
 def get_all_districts_geojson(db: Session = Depends(get_db)):
-    """Returns complete GeoJSON FeatureCollection of all 77 districts with current risk properties."""
-    districts = db.query(District).all()
-    features = []
+    """Returns complete GeoJSON FeatureCollection of all 77 districts with current risk properties. Cached for 60s."""
+    now = time.time()
+    if _GEOJSON_CACHE["data"] is not None and now < _GEOJSON_CACHE["expires_at"]:
+        return ApiResponse(data=_GEOJSON_CACHE["data"])
 
-    # Map current risks
+    districts = db.query(District).all()
+    latest_risks_map = get_latest_risks_map(db)
+    alert_counts_map = get_active_alert_counts(db)
+
+    features = []
     for d in districts:
         if not d.geometry:
             continue
-        latest_risk = db.query(RiskAssessment).filter(
-            RiskAssessment.district_id == d.id
-        ).order_by(RiskAssessment.calculated_at.desc()).first()
-
-        alert_count = db.query(Alert).filter(
-            Alert.district_id == d.id,
-            Alert.status == "ACTIVE"
-        ).count()
+        latest_risk = latest_risks_map.get(d.id)
+        alert_count = alert_counts_map.get(d.id, 0)
 
         features.append({
             "type": "Feature",
             "properties": {
                 "id": d.id,
                 "district": d.district_name,
+                "district_name": d.district_name,
                 "province": d.province,
                 "population": d.population,
                 "area_sqkm": d.area_sqkm,
@@ -108,10 +128,14 @@ def get_all_districts_geojson(db: Session = Depends(get_db)):
             "geometry": d.geometry
         })
 
-    return ApiResponse(data={
+    result_data = {
         "type": "FeatureCollection",
         "features": features
-    })
+    }
+    _GEOJSON_CACHE["data"] = result_data
+    _GEOJSON_CACHE["expires_at"] = now + 60.0  # 60s cache
+
+    return ApiResponse(data=result_data)
 
 @router.get("/compare", response_model=ApiResponse[DistrictComparison])
 def compare_districts(

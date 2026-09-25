@@ -1,12 +1,11 @@
-from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.user import User, Role, SavedLocation
 from app.schemas.auth import UserLogin, UserCreate, Token, UserOut, SavedLocationCreate, SavedLocationOut
 from app.schemas.common import ApiResponse
 from app.security.auth import verify_password, get_password_hash, create_access_token
-from app.security.permissions import get_current_user
+from app.security.permissions import get_current_user, get_current_user_optional
 from app.services.audit_service import log_audit_event
 from app.config import settings
 from app.utils.timezone import utc_now
@@ -56,7 +55,7 @@ def register_user(payload: UserCreate, request: Request, db: Session = Depends(g
     return ApiResponse(data=new_user)
 
 @router.post("/login", response_model=ApiResponse[Token])
-def login(payload: UserLogin, request: Request, db: Session = Depends(get_db)):
+def login(payload: UserLogin, request: Request, response: Response, db: Session = Depends(get_db)):
     user = db.query(User).filter(
         (User.username == payload.username_or_email) | (User.email == payload.username_or_email)
     ).first()
@@ -93,6 +92,18 @@ def login(payload: UserLogin, request: Request, db: Session = Depends(get_db)):
         ip_address=ip_addr
     )
 
+    # Set secure HttpOnly session cookie
+    is_secure = settings.ENVIRONMENT.lower() == "production"
+    response.set_cookie(
+        key="mg_access_token",
+        value=token_str,
+        max_age=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        httponly=True,
+        samesite="lax",
+        secure=is_secure,
+        path="/"
+    )
+
     return ApiResponse(
         data=Token(
             access_token=token_str,
@@ -101,6 +112,25 @@ def login(payload: UserLogin, request: Request, db: Session = Depends(get_db)):
             user=user
         )
     )
+
+@router.post("/logout", response_model=ApiResponse[bool])
+def logout(
+    request: Request,
+    response: Response,
+    current_user: Optional[User] = Depends(get_current_user_optional),
+    db: Session = Depends(get_db)
+):
+    """Clear session cookie and log audit record."""
+    response.delete_cookie(key="mg_access_token", path="/")
+    if current_user:
+        log_audit_event(
+            db=db,
+            action="logout",
+            user_id=current_user.id,
+            username=current_user.username,
+            ip_address=request.client.host if request.client else None
+        )
+    return ApiResponse(data=True)
 
 @router.get("/me", response_model=ApiResponse[UserOut])
 def get_current_user_profile(current_user: User = Depends(get_current_user)):

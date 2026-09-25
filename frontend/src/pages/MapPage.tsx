@@ -88,7 +88,15 @@ export default function MapPage() {
     riverMarkersLayerRef.current = riverGroup;
     mapInstanceRef.current = map;
 
+    const resizeObserver = new ResizeObserver(() => {
+      map.invalidateSize();
+    });
+    if (mapContainerRef.current) {
+      resizeObserver.observe(mapContainerRef.current);
+    }
+
     return () => {
+      resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
@@ -137,7 +145,7 @@ export default function MapPage() {
 
     const geojson = L.geoJSON(geojsonFeatures, {
       style: (feature) => {
-        const name = feature?.properties?.district_name || feature?.properties?.DISTRICT || '';
+        const name = feature?.properties?.district_name || feature?.properties?.district || feature?.properties?.DISTRICT || '';
         const d = districtMap.get(name.toLowerCase());
         const riskLevel = d?.current_overall_risk || 'LOW';
         const color = showChoroplethRisk ? (RISK_COLORS[riskLevel] || RISK_COLORS.DEFAULT) : '#3b82f6';
@@ -154,7 +162,7 @@ export default function MapPage() {
         };
       },
       onEachFeature: (feature, layer) => {
-        const name = feature?.properties?.district_name || feature?.properties?.DISTRICT || '';
+        const name = feature?.properties?.district_name || feature?.properties?.district || feature?.properties?.DISTRICT || '';
         const d = districtMap.get(name.toLowerCase());
 
         layer.bindTooltip(
