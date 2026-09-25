@@ -1,7 +1,7 @@
 import os
 from typing import List
+# pyrefly: ignore [missing-import]
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "MausamGuard Nepal"
