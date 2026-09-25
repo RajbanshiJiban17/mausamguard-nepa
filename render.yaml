@@ -1,11 +1,11 @@
 services:
-  # 100% Dynamic Full-Stack Multi-Hazard Early Warning & Decision Support System
   - type: web
     name: mausamguard-nepal
-    env: docker
-    dockerfilePath: Dockerfile.backend
+    runtime: docker
     plan: free
     region: singapore
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: ENVIRONMENT
         value: production
