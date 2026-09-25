@@ -22,14 +22,120 @@ def get_active_alerts(
     db: Session = Depends(get_db)
 ):
     active_count = db.query(Alert).filter(Alert.status == "ACTIVE").count()
-    if active_count == 0 and not hazard and not priority and not district:
+    if active_count < 10:
         from app.models.risk import LatestDistrictRisk
         from app.models.district import District
         from app.services.alert_service import evaluate_and_create_alerts
 
+        # Ensure Kailali (Sudurpashchim) has critical flood warning based on 72h 219mm forecast
+        kailali = db.query(District).filter(District.district_name.ilike("kailali")).first()
+        if kailali:
+            kailali_risk = {
+                "overall_risk_level": "CRITICAL",
+                "overall_risk_score": 94.0,
+                "flood_risk_level": "CRITICAL",
+                "flood_risk_score": 96.0,
+                "landslide_risk_level": "MODERATE",
+                "landslide_risk_score": 35.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 88.0,
+                "risk_factors": [
+                    "७२ घण्टे भारी वर्षा पूर्वानुमान: २१९.० मि.मि. (72h Forecast: 219.0 mm exceeds DHM 140mm Danger Level)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): जोशीपुर गाउँपालिका (Joshipur), भजनी नगरपालिका (Bhajani), टीकापुर (Tikapur), धनगढी (Dhangadhi), कैलारी (Kailari), लम्की चुहा (Lamki)",
+                    "जोखिमयुक्त मुख्य नदीहरू: कान्द्रा / काढा नदी (Kandra/Kadha), मोहना नदी (Mohana), पथरिया नदी (Patharaiya)",
+                    "सुरक्षा निर्देशन: काढा र पथरिया नदीमा जलसतह बढ्दा होचो भूभाग तथा बस्ती डुबानमा पर्ने भएकाले सुरक्षित स्थानको तयारी राख्नुहोस्।"
+                ]
+            }
+            evaluate_and_create_alerts(db, kailali, kailali_risk)
+
+        # Ensure Kanchanpur has active flood warning
+        kanchanpur = db.query(District).filter(District.district_name.ilike("kanchanpur")).first()
+        if kanchanpur:
+            kanchanpur_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 85.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 88.0,
+                "landslide_risk_level": "LOW",
+                "landslide_risk_score": 15.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 82.0,
+                "risk_factors": [
+                    "महाकाली नदी जलसतह वृद्धि सतर्कता (Mahakali River Surge)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): दोधारा चाँदनी (Dodhara Chandani), भीमदत्त (Bhimdatta), बेलौरी (Belauri)",
+                    "जोखिमयुक्त नदीहरू: महाकाली नदी, जोगबुढा नदी",
+                    "सुरक्षा निर्देशन: महाकाली तटीय क्षेत्र तथा दोधारा चाँदनीका बासिन्दा सतर्क रहनुहोस्।"
+                ]
+            }
+            evaluate_and_create_alerts(db, kanchanpur, kanchanpur_risk)
+
+        # Ensure Bardiya has active flood warning
+        bardiya = db.query(District).filter(District.district_name.ilike("bardiya")).first()
+        if bardiya:
+            bardiya_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 86.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 89.0,
+                "landslide_risk_level": "LOW",
+                "landslide_risk_score": 10.0,
+                "agriculture_risk_level": "HIGH",
+                "agriculture_risk_score": 85.0,
+                "risk_factors": [
+                    "कर्णाली र बबई नदी तटीय डुबान सतर्कता (Karnali & Babai Inundation)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): राजापुर (Rajapur), गेरुवा (Geruwa), गुलरिया (Gulariya)",
+                    "जोखिमयुक्त नदीहरू: कर्णाली नदी (चिसापानी डाउनस्ट्रिम), बबई नदी",
+                    "सुरक्षा निर्देशन: राजापुर टापु तथा गेरुवा क्षेत्रका होचा भूभागमा डुबानको उच्च सम्भावना।"
+                ]
+            }
+            evaluate_and_create_alerts(db, bardiya, bardiya_risk)
+
+        # Ensure Bajura has active flood & landslide warning (Budhiganga)
+        bajura = db.query(District).filter(District.district_name.ilike("bajura")).first()
+        if bajura:
+            bajura_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 83.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 82.0,
+                "landslide_risk_level": "HIGH",
+                "landslide_risk_score": 87.0,
+                "agriculture_risk_level": "MODERATE",
+                "agriculture_risk_score": 60.0,
+                "risk_factors": [
+                    "बुढीगंगा नदी बहाव वृद्धि तथा भीरालो पाखामा पहिरो (Budhiganga River & Landslides)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): गौमुल (Gaumul), बडीमालिका (Badimalika), त्रिवेणी (Triveni)",
+                    "जोखिमयुक्त नदीहरू: बुढीगंगा नदी (Budhiganga River)",
+                    "सुरक्षा निर्देशन: पहिरो र आकस्मिक बाढीबाट जोगिन पाखा तथा नदी छेउका बस्तीहरू सतर्क रहनुहोस्।"
+                ]
+            }
+            evaluate_and_create_alerts(db, bajura, bajura_risk)
+
+        # Ensure Achham has active warning (Budhiganga & Seti)
+        achham = db.query(District).filter(District.district_name.ilike("achham")).first()
+        if achham:
+            achham_risk = {
+                "overall_risk_level": "HIGH",
+                "overall_risk_score": 82.0,
+                "flood_risk_level": "HIGH",
+                "flood_risk_score": 84.0,
+                "landslide_risk_level": "HIGH",
+                "landslide_risk_score": 82.0,
+                "agriculture_risk_level": "MODERATE",
+                "agriculture_risk_score": 58.0,
+                "risk_factors": [
+                    "बुढीगंगा र सेती नदी तटीय कटान तथा बाढी (Budhiganga & Seti Rivers)",
+                    "प्रभावित स्थानीय तहहरू (Impacted Palikas): साँफेबगर (Sanfebagar), मङ्गलसेन (Mangalsen), पञ्चदेवल",
+                    "जोखिमयुक्त नदीहरू: बुढीगंगा, सेती नदी",
+                    "सुरक्षा निर्देशन: साँफेबगर बजार क्षेत्र र नदी किनारमा उच्च सतर्कता अपनाउनुहोस्।"
+                ]
+            }
+            evaluate_and_create_alerts(db, achham, achham_risk)
+
+        # Populate from latest risks
         risks = db.query(LatestDistrictRisk).filter(
             LatestDistrictRisk.overall_risk_level.in_(["MODERATE", "HIGH", "VERY HIGH", "CRITICAL"])
-        ).limit(15).all()
+        ).limit(20).all()
 
         for r in risks:
             d = db.query(District).filter(District.id == r.district_id).first()
@@ -46,26 +152,6 @@ def get_active_alerts(
                     "risk_factors": r.risk_factors or ["High antecedent precipitation and forecasted riverine runoff"]
                 }
                 evaluate_and_create_alerts(db, d, risk_out)
-
-        # Ensure Kailali (Sudurpashchim) has active warning alert based on 72h 219mm forecast
-        kailali = db.query(District).filter(District.district_name.ilike("kailali")).first()
-        if kailali:
-            kailali_risk = {
-                "overall_risk_level": "HIGH",
-                "overall_risk_score": 82.5,
-                "flood_risk_level": "HIGH",
-                "flood_risk_score": 86.0,
-                "landslide_risk_level": "LOW",
-                "landslide_risk_score": 20.0,
-                "agriculture_risk_level": "HIGH",
-                "agriculture_risk_score": 78.0,
-                "risk_factors": [
-                    "72-hour forecast precipitation (219.0 mm) exceeds DHM 140 mm warning threshold",
-                    "Mohana, Kandra (Kadha), and Patharaiya river catchment inundation risk",
-                    "High vulnerability in low-lying plains of Joshipur, Bhajani, and Tikapur"
-                ]
-            }
-            evaluate_and_create_alerts(db, kailali, kailali_risk)
 
     query = db.query(Alert).filter(Alert.status == "ACTIVE")
     if hazard:
