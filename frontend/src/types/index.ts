@@ -59,6 +59,23 @@ export interface DistrictDetail extends DistrictSummary {
   municipalities?: any[];
   recent_events?: any[];
   active_alerts?: any[];
+  latest_weather?: {
+    condition: string;
+    rainfall_24h_mm: number;
+    rainfall_24h_peak_mm?: number;
+    temp_c?: number;
+    humidity_pct?: number;
+    source?: string;
+  };
+  forecast_summary?: {
+    horizon_24h_mm?: number;
+    horizon_48h_mm?: number;
+    horizon_72h_mm?: number;
+    dhm_threshold_exceeded?: boolean;
+    hazard_level?: string;
+    forecast_headline?: string;
+    forecast_headline_ne?: string;
+  };
   nearest_river_station?: any;
   risk_factors?: string[];
   risk_explanation?: string;
