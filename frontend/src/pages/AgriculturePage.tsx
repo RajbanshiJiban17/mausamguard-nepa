@@ -39,12 +39,15 @@ export default function AgriculturePage() {
     }
   };
 
-  const assessments = (data?.district_assessments || [])
-    .filter((a: any) => {
-      const matchSearch = a.district.toLowerCase().includes(search.toLowerCase());
-      const matchRisk = selectedRisk === 'all' || a.crop_risk_level === selectedRisk;
-      return matchSearch && matchRisk;
-    });
+  const rawAssessments: any[] = data?.districts || data?.district_assessments || (Array.isArray(data) ? data : []);
+  const assessments = rawAssessments.filter((a: any) => {
+    const distName = (a.district_name || a.district || '').toLowerCase();
+    const provName = (a.province || '').toLowerCase();
+    const q = search.toLowerCase().trim();
+    const matchSearch = !q || distName.includes(q) || provName.includes(q);
+    const matchRisk = selectedRisk === 'all' || (a.crop_risk_level || '').toUpperCase() === selectedRisk.toUpperCase();
+    return matchSearch && matchRisk;
+  });
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -141,14 +144,14 @@ export default function AgriculturePage() {
                 <div>
                   <div className="flex items-start justify-between mb-2">
                     <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
-                      {a.province} Province
+                      {a.province || 'Nepal'}
                     </span>
                     <RiskBadge level={a.crop_risk_level || 'LOW'} size="sm" />
                   </div>
 
                   <h3 className="text-lg font-bold text-white mb-2">
-                    <Link to={`/district/${a.district}`} className="hover:text-emerald-400">
-                      {a.district} District
+                    <Link to={`/district/${a.district_name || a.district}`} className="hover:text-emerald-400 text-sky-200">
+                      {a.district_name || a.district} District
                     </Link>
                   </h3>
 
@@ -156,22 +159,20 @@ export default function AgriculturePage() {
                   <div className="grid grid-cols-2 gap-2 text-xs bg-slate-950/60 p-3 rounded-xl border border-slate-800 mb-3">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400">Rain Stress:</span>
-                      <span className="font-semibold text-slate-200">{a.rainfall_stress || 'Low'}</span>
+                      <span className="font-semibold text-slate-200">{a.rainfall_stress_level || a.rainfall_stress || 'Low'}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-slate-400">Thermal:</span>
-                      <span className="font-semibold text-slate-200">{a.temperature_stress || 'Optimal'}</span>
+                      <span className="font-semibold text-slate-200">{a.temperature_stress_level || a.temperature_stress || 'Optimal'}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Flood Inundation:</span>
-                      <span className="font-semibold text-slate-200">{a.flood_exposure || 'Low'}</span>
+                      <span className="text-slate-400">Flood Risk:</span>
+                      <span className="font-semibold text-slate-200">{a.flood_exposure_level || a.flood_exposure || 'Low'}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-400">24h Rain:</span>
+                      <span className="text-slate-400">Forecast Rain:</span>
                       <span className="font-mono text-sky-400 font-bold">
-                        {a.latest_rainfall_mm !== undefined && a.latest_rainfall_mm !== null
-                          ? `${a.latest_rainfall_mm.toFixed(1)} mm`
-                          : '0.0 mm'}
+                        {(a.forecast_rainfall_mm ?? a.recent_rainfall_mm ?? a.latest_rainfall_mm ?? 0).toFixed(1)} mm
                       </span>
                     </div>
                   </div>

@@ -32,7 +32,7 @@ def evaluate_and_create_alerts(
     """
     new_alerts: List[Alert] = []
     now = utc_now()
-    expires_at = now + timedelta(hours=18)
+    expires_at = now + timedelta(days=3)
     
     district_name = district.district_name
     overall_level = risk_assessment["overall_risk_level"]

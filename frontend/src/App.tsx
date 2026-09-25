@@ -19,12 +19,24 @@ import AboutPage from './pages/AboutPage';
 import SystemStatusPage from './pages/SystemStatusPage';
 import LoginPage from './pages/LoginPage';
 import AdminPage from './pages/AdminPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<RootLayout />}>
+        {/* Public Login Route */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Protected Dashboard & Operations Routes */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <RootLayout />
+            </ProtectedRoute>
+          }
+        >
           {/* Main National Dashboard */}
           <Route index element={<DashboardPage />} />
 
@@ -56,7 +68,6 @@ export default function App() {
 
           {/* System Operations & Governance */}
           <Route path="system-status" element={<SystemStatusPage />} />
-          <Route path="login" element={<LoginPage />} />
           <Route path="admin" element={<AdminPage />} />
 
           {/* Fallback to Dashboard */}

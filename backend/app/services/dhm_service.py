@@ -164,6 +164,54 @@ DHM_BENCHMARK_STATIONS = [
         "warning_level_m": 6.8,
         "danger_level_m": 8.0,
         "notes": "Downstream Terai barrage gauge for Kanchanpur early warnings"
+    },
+    {
+        "station_id": "DHM-RIV-14",
+        "station_name": "Bhajani / Joshipur (Kandra / Kadha River)",
+        "river_name": "Kandra (Kadha)",
+        "basin": "Mohana Basin (Kailali)",
+        "district": "Kailali",
+        "latitude": 28.528,
+        "longitude": 81.042,
+        "warning_level_m": 3.0,
+        "danger_level_m": 4.0,
+        "notes": "Critical flash flood & backwater inundation station for Joshipur and Bhajani floodplains"
+    },
+    {
+        "station_id": "DHM-RIV-15",
+        "station_name": "Tikapur / Joshipur Bridge (Patharaiya River)",
+        "river_name": "Patharaiya",
+        "basin": "Mohana Basin (Kailali)",
+        "district": "Kailali",
+        "latitude": 28.535,
+        "longitude": 81.095,
+        "warning_level_m": 3.2,
+        "danger_level_m": 4.2,
+        "notes": "Patharaiya river warning gauge protecting Joshipur and Tikapur rural communities"
+    },
+    {
+        "station_id": "DHM-RIV-16",
+        "station_name": "Chisapani (Karnali River Basin)",
+        "river_name": "Karnali",
+        "basin": "Karnali Basin",
+        "district": "Kailali / Bardiya",
+        "latitude": 28.643,
+        "longitude": 81.284,
+        "warning_level_m": 10.0,
+        "danger_level_m": 10.8,
+        "notes": "Major gateway river gauge for Karnali basin and eastern Kailali lowlands"
+    },
+    {
+        "station_id": "DHM-RIV-17",
+        "station_name": "Godawari / Attariya (Godawari River)",
+        "river_name": "Godawari",
+        "basin": "Mohana Basin (Kailali)",
+        "district": "Kailali",
+        "latitude": 28.841,
+        "longitude": 80.582,
+        "warning_level_m": 3.8,
+        "danger_level_m": 4.8,
+        "notes": "Flash flood monitoring gauge for Attariya, Godawari & Dhangadhi corridor"
     }
 ]
 

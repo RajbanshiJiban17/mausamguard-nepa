@@ -41,14 +41,23 @@ export default function RiversPage() {
     }
   };
 
-  const filteredStations = (Array.isArray(stations) ? stations : []).filter((st) => {
+  const filteredStations = (Array.isArray(stations) ? stations : []).filter((st: any) => {
     if (!st) return false;
-    const query = search.toLowerCase();
+    const query = search.toLowerCase().trim();
     const name = (st.station_name || '').toLowerCase();
     const dist = (st.district || '').toLowerCase();
     const riv = (st.river_name || '').toLowerCase();
     const bas = (st.basin || '').toLowerCase();
-    return name.includes(query) || dist.includes(query) || riv.includes(query) || bas.includes(query);
+    const notes = (st.notes || '').toLowerCase();
+    const matchSearch =
+      !query ||
+      name.includes(query) ||
+      dist.includes(query) ||
+      riv.includes(query) ||
+      bas.includes(query) ||
+      notes.includes(query);
+    const matchBasin = basinFilter === 'all' || bas.includes(basinFilter.toLowerCase());
+    return matchSearch && matchBasin;
   });
 
   return (
@@ -105,15 +114,23 @@ export default function RiversPage() {
 
         {/* Filter Toolbar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/40 border border-slate-800 p-3 rounded-2xl">
-          <div className="relative w-full sm:w-72">
+          <div className="relative w-full sm:w-96">
             <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search station, river, or district..."
+              placeholder="Search river, station, district, or village (e.g. Joshipur, Kadha, Mohana)..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 text-xs text-white pl-9 pr-3 py-2 rounded-xl focus:outline-none focus:border-cyan-500"
+              className="w-full bg-slate-950 border border-slate-800 text-xs text-white pl-9 pr-8 py-2 rounded-xl focus:outline-none focus:border-cyan-500"
             />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -124,11 +141,11 @@ export default function RiversPage() {
               className="bg-slate-950 border border-slate-800 text-xs text-slate-300 py-1.5 px-3 rounded-xl focus:outline-none focus:border-cyan-500"
             >
               <option value="all">All Basins</option>
+              <option value="Mohana">Mohana Basin (Kailali)</option>
+              <option value="Karnali">Karnali Basin</option>
               <option value="Mahakali">Mahakali Basin (Sudurpashchim)</option>
               <option value="Seti">Seti Basin (Sudurpashchim)</option>
               <option value="Budhiganga">Budhiganga Basin (Sudurpashchim)</option>
-              <option value="Mohana">Mohana Basin (Kailali)</option>
-              <option value="Karnali">Karnali Basin</option>
               <option value="West Rapti">West Rapti</option>
               <option value="Narayani">Narayani / Gandaki</option>
               <option value="Bagmati">Bagmati Basin</option>
@@ -147,63 +164,75 @@ export default function RiversPage() {
           <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
             <Waves className="w-12 h-12 mx-auto text-slate-600 mb-3" />
             <h3 className="text-lg font-bold text-white mb-1">No Stations Found</h3>
-            <p className="text-xs text-slate-500">Try selecting a different river basin.</p>
+            <p className="text-xs text-slate-500">Try changing your search query or river basin filter.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {filteredStations.map((st) => (
-              <div
-                key={st.id}
-                className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg"
-              >
-                <div>
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold">
-                      {st.basin} Basin
-                    </span>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800">
-                      ID: {st.station_id}
-                    </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredStations.map((st: any) => {
+              const liveStage = st.current_water_level ?? st.water_level;
+              return (
+                <div
+                  key={st.id}
+                  className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between hover:border-cyan-500/40 transition-colors shadow-lg"
+                >
+                  <div>
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-[10px] uppercase tracking-wider text-cyan-400 font-bold">
+                        {st.basin}
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-950 text-slate-400 border border-slate-800">
+                        ID: {st.station_id}
+                      </span>
+                    </div>
+
+                    <h3 className="text-base font-bold text-white mb-0.5">
+                      {st.station_name}
+                    </h3>
+                    <div className="text-xs text-slate-400 mb-2">
+                      River: <strong className="text-sky-300">{st.river_name}</strong> | District:{' '}
+                      <Link to={`/district/${st.district}`} className="text-blue-400 hover:underline">
+                        {st.district}
+                      </Link>
+                    </div>
+
+                    {st.notes && (
+                      <p className="text-[11px] text-slate-400 bg-slate-950/60 p-2 rounded-lg border border-slate-800/60 mb-3 leading-relaxed">
+                        {st.notes}
+                      </p>
+                    )}
+
+                    {/* Thresholds Box */}
+                    <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-2 text-xs mb-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400">Warning Level:</span>
+                        <span className="font-mono font-bold text-amber-400">
+                          {st.warning_level_m !== null ? `${st.warning_level_m} m` : 'N/A'}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400">Danger Level:</span>
+                        <span className="font-mono font-bold text-red-400">
+                          {st.danger_level_m !== null ? `${st.danger_level_m} m` : 'N/A'}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
+                        <span className="text-slate-400">Live Stage:</span>
+                        <span className="font-mono text-[11px] text-amber-500 italic">
+                          {liveStage != null ? `${liveStage.toFixed(2)} m` : 'Feed unavailable (DHM offline)'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white mb-0.5">
-                    {st.station_name}
-                  </h3>
-                  <div className="text-xs text-slate-400 mb-4">
-                    District: <Link to={`/district/${st.district}`} className="text-blue-400 hover:underline">{st.district}</Link>
-                  </div>
-
-                  {/* Thresholds Box */}
-                  <div className="bg-slate-950/70 border border-slate-800 p-3 rounded-xl space-y-2 text-xs mb-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Warning Level:</span>
-                      <span className="font-mono font-bold text-amber-400">
-                        {st.warning_level_m !== null ? `${st.warning_level_m} m` : 'N/A'}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-400">Danger Level:</span>
-                      <span className="font-mono font-bold text-red-400">
-                        {st.danger_level_m !== null ? `${st.danger_level_m} m` : 'N/A'}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between pt-1 border-t border-slate-800/80">
-                      <span className="text-slate-400">Live Stage:</span>
-                      <span className="font-mono text-[11px] text-amber-500 italic">
-                        {st.water_level !== null ? `${st.water_level} m` : 'Feed unavailable'}
-                      </span>
-                    </div>
+                  <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
+                    <span>Source: {st.source}</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" /> Benchmark Ref
+                    </span>
                   </div>
                 </div>
-
-                <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
-                  <span>Source: {st.source}</span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" /> Benchmark Ref
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </main>
